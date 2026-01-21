@@ -74,21 +74,52 @@ export default function SignupPage() {
         const data = await res.json();
         setUserCountry(data.country_name || "Unknown");
         
-        // Auto-select country code based on detected country
-        const countryMapping: Record<string, string> = {
-          "United States": "+1",
-          "Canada": "+1",
-          "United Kingdom": "+44",
-          "Australia": "+61",
-          "Germany": "+49",
-          "France": "+33",
-          "Italy": "+39",
-          "Spain": "+34",
-          "Netherlands": "+31",
-          "India": "+91",
+        // Auto-select country code based on detected country code
+        const countryCodeMapping: Record<string, string> = {
+          "US": "+1",
+          "CA": "+1",
+          "GB": "+44",
+          "UK": "+44",
+          "AU": "+61",
+          "DE": "+49",
+          "FR": "+33",
+          "IT": "+39",
+          "ES": "+34",
+          "NL": "+31",
+          "SE": "+46",
+          "NO": "+47",
+          "DK": "+45",
+          "CH": "+41",
+          "AT": "+43",
+          "BE": "+32",
+          "IE": "+353",
+          "NZ": "+64",
+          "IN": "+91",
+          "CN": "+86",
+          "JP": "+81",
+          "KR": "+82",
+          "BR": "+55",
+          "MX": "+52",
+          "ZA": "+27",
+          "AE": "+971",
+          "SA": "+966",
+          "SG": "+65",
+          "MY": "+60",
+          "PH": "+63",
+          "ID": "+62",
+          "TH": "+66",
+          "VN": "+84",
+          "PL": "+48",
+          "RU": "+7",
+          "TR": "+90",
+          "EG": "+20",
+          "NG": "+234",
+          "KE": "+254",
         };
-        if (data.country_name && countryMapping[data.country_name]) {
-          setCountryCode(countryMapping[data.country_name]);
+        
+        // Use country_code from API (e.g., "US", "GB", etc.)
+        if (data.country_code && countryCodeMapping[data.country_code]) {
+          setCountryCode(countryCodeMapping[data.country_code]);
         }
       } catch {
         setUserCountry("Unknown");
