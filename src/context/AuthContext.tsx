@@ -69,39 +69,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user, loading, pathname, router]);
 
   const signUp = async (email: string, password: string) => {
-    try {
-      // Create the account
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+    // With email confirmation disabled, signUp returns a session directly
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
 
-      if (error) {
-        return { error: error.message };
-      }
-
-      // If user was created, immediately sign them in
-      // This bypasses any email confirmation wait
-      if (data.user) {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (signInError) {
-          // If sign in fails, the account might need email confirmation
-          // In that case, return a helpful message
-          if (signInError.message.includes("Email not confirmed")) {
-            return { error: "Please check your email to confirm your account, or disable email confirmation in Supabase settings." };
-          }
-          return { error: signInError.message };
-        }
-      }
-
-      return { error: null };
-    } catch (err) {
-      return { error: "An unexpected error occurred" };
+    if (error) {
+      return { error: error.message };
     }
+
+    // If we got a session, user is logged in
+    if (data.session) {
+      setSession(data.session);
+      setUser(data.user);
+      router.push("/");
+    }
+
+    return { error: null };
   };
 
   const signIn = async (email: string, password: string) => {
