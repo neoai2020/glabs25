@@ -38,7 +38,7 @@ export default function SocialProofPage() {
         </div>
         <div className="glass-card rounded-2xl p-6">
           <Star className="text-amber-400 fill-amber-400" size={28} />
-          <p className="mt-3 text-3xl font-bold text-white">$68</p>
+          <p className="mt-3 text-3xl font-bold text-white">$214.36</p>
           <p className="text-sm text-slate-400">Avg daily earnings</p>
         </div>
       </div>

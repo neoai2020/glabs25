@@ -74,7 +74,7 @@ const niches = [
     id: "fitness", 
     name: "Health & Fitness", 
     icon: Dumbbell, 
-    earnings: "$68/day avg",
+    earnings: "$98/day avg",
     prompts: [
       "Home gym setup with yoga mat and weights",
       "Healthy meal prep containers with protein and vegetables",

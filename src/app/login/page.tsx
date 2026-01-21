@@ -154,7 +154,7 @@ export default function LoginPage() {
                 <span className="text-xl">📈</span>
               </div>
               <div>
-                <p className="font-medium text-white">$68/day average</p>
+                <p className="font-medium text-white">$214.36/day average</p>
                 <p className="text-sm text-slate-400">Member earnings</p>
               </div>
             </div>

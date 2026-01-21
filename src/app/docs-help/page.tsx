@@ -18,7 +18,7 @@ const faqs = [
   },
   { 
     q: "How much can I realistically earn?", 
-    a: "Our average member earns about $68/day from Pinterest alone. Top earners make $300-500/day. It depends on how many images you publish and which niches you choose." 
+    a: "Our average member earns about $214.36/day. Top earners make $500-1,000/day. It depends on how consistently you follow our system." 
   },
   { 
     q: "Which platform should I start with?", 

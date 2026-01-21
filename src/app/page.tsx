@@ -103,7 +103,7 @@ export default function Home() {
               <TrendingUp className="text-amber-400" size={24} />
             </div>
             <div>
-              <p className="text-3xl font-bold text-white">$68</p>
+              <p className="text-3xl font-bold text-white">$214.36</p>
               <p className="text-sm text-slate-400">Average daily earnings</p>
             </div>
           </div>

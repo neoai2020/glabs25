@@ -193,8 +193,8 @@ export default function SignupPage() {
                 <TrendingUp className="text-amber-400" size={24} />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">$68/Day Average Earnings</p>
-                <p className="text-slate-400">Our members earn an average of $68 per day in passive income</p>
+                <p className="font-semibold text-white text-lg">$214.36/Day Average Earnings</p>
+                <p className="text-slate-400">Our members earn an average of $214.36 per day in passive income</p>
               </div>
             </div>
 

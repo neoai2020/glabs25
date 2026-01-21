@@ -156,7 +156,7 @@ export default function LaunchpadPage() {
           </div>
           <div className="flex items-center justify-center">
             <div className="text-center">
-              <p className="text-6xl font-bold text-white">$68</p>
+              <p className="text-6xl font-bold text-white">$214</p>
               <p className="text-slate-400">Average daily earnings</p>
               <p className="mt-2 text-emerald-400 font-medium">from Pinterest alone</p>
             </div>
