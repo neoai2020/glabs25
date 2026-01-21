@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "G-Labs 95 | Command Center",
+  title: "G-Labs 95 | AI Income System",
   description:
-    "Generate, monetize, and publish AI images with affiliate-ready flows.",
+    "Generate AI images, publish to Pinterest, and earn passive income.",
 };
 
 export default function RootLayout({
@@ -28,10 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased bg-[#06040f] text-slate-50`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen antialiased bg-[#0a0a0f] text-slate-50`}
       >
-        <div className="fixed inset-0 grid-overlay opacity-40" aria-hidden />
-        <div className="relative z-10 min-h-screen">{children}</div>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
