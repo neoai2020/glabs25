@@ -83,6 +83,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (data.session) {
       setSession(data.session);
       setUser(data.user);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("glabs_needs_onboarding", "true");
+      }
       router.push("/");
     }
 

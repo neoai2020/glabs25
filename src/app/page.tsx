@@ -1,77 +1,53 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Play, Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2 } from "lucide-react";
+import { Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2, Map } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { LiveEarnings } from "@/components/ui/LiveEarnings";
+import { OnboardingJourney } from "@/components/ui/OnboardingJourney";
 
 export default function Home() {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem("glabs_needs_onboarding") === "true") {
+      setShowOnboarding(true);
+    }
+  }, []);
+
   return (
     <AppShell
       title="Welcome to G-Labs 95"
       subtitle="Your AI-powered income system • Join 12,400+ members earning daily"
     >
-      {/* Hero Video Card - Above the fold */}
-      <div className="glass-gold rounded-3xl overflow-hidden">
-        <div className="grid lg:grid-cols-2">
-          {/* Video Section */}
-          <div className="relative aspect-video lg:aspect-auto bg-gradient-to-br from-amber-900/30 to-emerald-900/20 min-h-[300px]">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <button className="group relative flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/20">
-                <div className="absolute inset-0 rounded-full bg-amber-500/20 animate-ping" />
-                <Play size={32} className="text-white fill-white ml-1" />
-              </button>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 video-overlay p-6">
-              <Badge tone="success" pulse>WATCH NOW</Badge>
-              <p className="mt-2 text-lg font-semibold text-white">How I Made $2,847 Last Week</p>
-              <p className="text-sm text-slate-300">10 minute training • No experience needed</p>
-            </div>
+      <OnboardingJourney open={showOnboarding} onClose={() => setShowOnboarding(false)} />
+
+      {/* Big Start Journey CTA */}
+      <button
+        onClick={() => setShowOnboarding(true)}
+        className="group relative w-full overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 p-10 text-center transition-all hover:border-amber-500/50 hover:shadow-[0_0_60px_rgba(251,191,36,0.15)]"
+      >
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-emerald-500/5 opacity-0 transition group-hover:opacity-100" />
+        <div className="relative">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 shadow-[0_0_40px_rgba(251,191,36,0.3)] transition-transform group-hover:scale-110">
+            <Map size={36} className="text-black" />
           </div>
-
-          {/* Content Section */}
-          <div className="p-8 lg:p-10">
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-medium text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-              347 people earned money today
-            </div>
-            
-            <h2 className="mt-4 text-3xl font-bold text-white lg:text-4xl">
-              Your AI Creates <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Money-Making</span> Images
-            </h2>
-            
-            <p className="mt-4 text-lg text-slate-300">
-              Just pick a topic. Our AI does everything else — creates stunning images, writes captions, and shows you exactly how to post for maximum earnings.
-            </p>
-
-            <div className="mt-6 space-y-3">
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                <span className="text-white">AI creates images that get clicks (no design skills needed)</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                <span className="text-white">Your affiliate link earns you money on every sale</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
-                <span className="text-white">Works while you sleep — 24/7 passive income</span>
-              </div>
-            </div>
-
-            <Link
-              href="/image-forge"
-              className="btn-premium mt-8 flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-black transition-all hover:scale-[1.02]"
-            >
-              <Zap size={20} />
-              Start Making Money Now
-              <ArrowRight size={20} />
-            </Link>
+          <h2 className="mt-6 text-3xl font-extrabold text-white sm:text-4xl">
+            Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Income Journey</span>
+          </h2>
+          <p className="mt-3 text-lg text-slate-300">
+            Take the guided tour and discover how to start earning with AI
+          </p>
+          <div className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all group-hover:shadow-xl group-hover:shadow-amber-500/40">
+            <Sparkles size={22} />
+            Take The Tour
+            <ArrowRight size={22} className="transition-transform group-hover:translate-x-1" />
           </div>
+          <p className="mt-4 text-sm text-slate-500">Takes 2 minutes • See exactly how members earn $214/day</p>
         </div>
-      </div>
+      </button>
 
       {/* Stats Row */}
       <div className="grid gap-4 sm:grid-cols-3">
@@ -116,7 +92,6 @@ export default function Home() {
         <p className="text-center text-slate-400 mt-2">Follow these steps in order to maximize your earnings</p>
         
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          {/* Step 1 */}
           <Link href="/image-forge" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-xl font-bold text-black shadow-lg shadow-amber-500/30">
@@ -134,7 +109,6 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Step 2 */}
           <Link href="/monetization/link-vault" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-emerald-500/30 hover:bg-white/8">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-xl font-bold text-black shadow-lg shadow-emerald-500/30">
@@ -152,7 +126,6 @@ export default function Home() {
             </div>
           </Link>
 
-          {/* Step 3 */}
           <Link href="/launchpad" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="flex items-center gap-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-emerald-500 text-xl font-bold text-black shadow-lg shadow-amber-500/30">

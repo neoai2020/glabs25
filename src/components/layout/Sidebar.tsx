@@ -7,11 +7,10 @@ import {
   Wand2,
   DollarSign,
   Rocket,
-  GraduationCap,
+  Map,
   HelpCircle,
   User,
   Zap,
-  Play,
   MessageCircle,
 } from "lucide-react";
 import clsx from "clsx";
@@ -31,7 +30,7 @@ const mainNav: NavItem[] = [
 ];
 
 const secondaryNav: NavItem[] = [
-  { label: "Success Academy", href: "/academy", icon: <GraduationCap size={20} /> },
+  { label: "Start Tour", href: "/academy", icon: <Map size={20} /> },
   { label: "Help Center", href: "/docs-help", icon: <HelpCircle size={20} /> },
   { label: "My Account", href: "/account", icon: <User size={20} /> },
 ];
@@ -129,23 +128,23 @@ export function Sidebar() {
         </a>
       </div>
 
-      {/* Watch Training Card */}
+      {/* Tour Card */}
       <div className="m-4 mt-0">
         <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-emerald-500/5 p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
-              <Play size={16} className="text-amber-400 fill-amber-400 ml-0.5" />
+              <Map size={16} className="text-amber-400" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">Watch Training</p>
-              <p className="text-xs text-slate-400">10 min to first $100</p>
+              <p className="text-sm font-semibold text-white">Income Tour</p>
+              <p className="text-xs text-slate-400">See how members earn daily</p>
             </div>
           </div>
           <Link
             href="/academy"
             className="mt-4 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-2.5 text-sm font-semibold text-black transition hover:from-amber-400 hover:to-amber-500"
           >
-            Start Now
+            Take The Tour
           </Link>
         </div>
       </div>
