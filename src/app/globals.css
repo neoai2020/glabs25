@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050508;
+  --background: #0a0a0f;
   --foreground: #f5f5f7;
+  
+  /* Premium gold/money palette */
+  --gold-50: #fffbeb;
+  --gold-100: #fef3c7;
+  --gold-200: #fde68a;
+  --gold-300: #fcd34d;
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+  
+  /* Premium emerald for success/money */
+  --money-green: #10b981;
+  --money-green-glow: rgba(16, 185, 129, 0.4);
+  
+  /* Cards and surfaces */
+  --card: rgba(255, 255, 255, 0.03);
+  --card-hover: rgba(255, 255, 255, 0.06);
+  --card-premium: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(16, 185, 129, 0.05));
+  --border: rgba(255, 255, 255, 0.06);
+  --border-gold: rgba(251, 191, 36, 0.3);
+  
+  /* Glows */
+  --glow-gold: 0 0 60px rgba(251, 191, 36, 0.15);
+  --glow-money: 0 0 80px rgba(16, 185, 129, 0.12);
+  --glow-premium: 0 20px 60px rgba(251, 191, 36, 0.1), 0 0 120px rgba(16, 185, 129, 0.08);
 }
 
 @theme inline {
@@ -12,45 +37,132 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Premium dark background with subtle grid */
 body {
-  background: linear-gradient(135deg, #050508 0%, #0a0a12 50%, #050508 100%);
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(251, 191, 36, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(16, 185, 129, 0.06), transparent),
+    radial-gradient(ellipse 50% 30% at 0% 100%, rgba(251, 191, 36, 0.04), transparent),
+    linear-gradient(180deg, #0a0a0f 0%, #080810 50%, #0a0a0f 100%);
   color: var(--foreground);
   min-height: 100vh;
 }
 
+/* Animated grid overlay */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(251, 191, 36, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
 /* Premium glass card */
 .glass-card {
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   backdrop-filter: blur(20px);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Gold accent card */
+.glass-card:hover {
+  border-color: rgba(251, 191, 36, 0.15);
+  box-shadow: 
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(251, 191, 36, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Premium gold card for money/earnings */
 .glass-gold {
   border: 1px solid rgba(251, 191, 36, 0.2);
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, rgba(16, 185, 129, 0.04) 100%);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(16, 185, 129, 0.04));
   backdrop-filter: blur(20px);
+  box-shadow: var(--glow-premium);
 }
 
-/* Money/success card */
+/* Success/money card */
 .glass-money {
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.02));
+  backdrop-filter: blur(20px);
+  box-shadow: var(--glow-money);
 }
 
-/* Premium button glow */
-.btn-premium {
-  background: linear-gradient(135deg, #f59e0b 0%, #10b981 100%);
-  box-shadow: 0 0 30px rgba(245, 158, 11, 0.3), 0 0 60px rgba(16, 185, 129, 0.2);
+/* Strong CTA banner */
+.glass-strong {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(16, 185, 129, 0.08));
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  box-shadow: 
+    0 10px 50px rgba(251, 191, 36, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.btn-premium:hover {
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), 0 0 80px rgba(16, 185, 129, 0.3);
+/* Pills and badges */
+.pill {
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-/* Money value animation */
-.money-glow {
-  text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+.pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.pill-gold {
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.1);
+  color: #fcd34d;
+}
+
+.pill-money {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.1);
+  color: #6ee7b7;
+}
+
+/* Headlines */
+.headline {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.headline-gold {
+  background: linear-gradient(135deg, #fcd34d, #f59e0b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.headline-money {
+  background: linear-gradient(135deg, #6ee7b7, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Money counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.money-value {
+  animation: countUp 0.6s ease-out;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Pulse animation for live indicators */
@@ -59,55 +171,128 @@ body {
   50% { opacity: 0.5; }
 }
 
-.animate-live {
+.live-indicator {
   animation: livePulse 2s ease-in-out infinite;
 }
 
-/* Shimmer effect for loading */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* Glow animation for premium elements */
+@keyframes premiumGlow {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.3), 0 0 60px rgba(16, 185, 129, 0.15);
+  }
 }
 
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.1) 50%, transparent 75%);
+.premium-glow {
+  animation: premiumGlow 3s ease-in-out infinite;
+}
+
+/* Progress bar with money gradient */
+.progress-money {
+  background: linear-gradient(90deg, #10b981, #fbbf24);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Premium button */
+.btn-premium {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #0a0a0f;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  box-shadow: 
+    0 4px 20px rgba(251, 191, 36, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px rgba(251, 191, 36, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* AI working indicator */
+@keyframes aiThinking {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.ai-working {
+  background: linear-gradient(90deg, 
+    rgba(251, 191, 36, 0.1), 
+    rgba(16, 185, 129, 0.2), 
+    rgba(251, 191, 36, 0.1)
+  );
   background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+  animation: aiThinking 2s ease-in-out infinite;
 }
 
-/* AI thinking animation */
-@keyframes aiThink {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.2); opacity: 1; }
+/* Status indicators */
+.status-active {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #6ee7b7;
 }
 
-.ai-thinking > span:nth-child(1) { animation: aiThink 1.4s 0s infinite; }
-.ai-thinking > span:nth-child(2) { animation: aiThink 1.4s 0.2s infinite; }
-.ai-thinking > span:nth-child(3) { animation: aiThink 1.4s 0.4s infinite; }
+.status-pending {
+  background: rgba(251, 191, 36, 0.2);
+  border-color: rgba(251, 191, 36, 0.4);
+  color: #fcd34d;
+}
 
-/* Larger inputs for older users */
-input, textarea, select {
+.status-error {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+/* Large readable text for older users */
+.text-readable {
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.text-readable-lg {
   font-size: 1.125rem;
+  line-height: 1.7;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
+/* Input fields - larger and clearer */
+input, textarea, select {
+  font-size: 1rem !important;
+  padding: 0.875rem 1rem !important;
 }
 
-/* Focus states */
-*:focus-visible {
-  outline: 2px solid rgba(251, 191, 36, 0.5);
-  outline-offset: 2px;
-}
-
-/* Custom scrollbar */
+/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -116,10 +301,22 @@ html {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* Video thumbnail overlay */
-.video-overlay {
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%);
+/* Popup animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.85) translateY(20px); }
+  60% { opacity: 1; transform: scale(1.03) translateY(-4px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); }
+  50% { opacity: 0.9; transform: scale(1.2) translateY(-8px); }
 }

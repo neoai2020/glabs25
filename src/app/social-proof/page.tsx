@@ -1,149 +1,280 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
-import { socialFeed, testimonials } from "@/lib/mockData";
-import { Clock, Star, TrendingUp, DollarSign, Users, ArrowRight } from "lucide-react";
+import { socialFeed, testimonials, earningsData, topNiches } from "@/lib/mockData";
+import { 
+  TrendingUp, 
+  DollarSign, 
+  Users, 
+  Clock,
+  Star,
+  CheckCircle2,
+  Flame,
+  ArrowRight,
+  Zap
+} from "lucide-react";
 import Link from "next/link";
 
+const communityStats = [
+  { label: "Active Members", value: "12,459", icon: Users, color: "amber" },
+  { label: "Earned This Month", value: "$847K", icon: DollarSign, color: "emerald" },
+  { label: "Images Created Today", value: "24,892", icon: Zap, color: "amber" },
+  { label: "Average First Earnings", value: "3 Days", icon: Clock, color: "emerald" },
+];
+
 const topEarners = [
-  { rank: 1, name: "Patricia M.", earnings: "$12,847", period: "This month", niche: "Home Decor" },
-  { rank: 2, name: "Robert J.", earnings: "$9,234", period: "This month", niche: "Kitchen" },
-  { rank: 3, name: "Linda S.", earnings: "$8,102", period: "This month", niche: "Skincare" },
-  { rank: 4, name: "James W.", earnings: "$7,456", period: "This month", niche: "Baby Products" },
-  { rank: 5, name: "Barbara K.", earnings: "$6,891", period: "This month", niche: "Fashion" },
+  { name: "James R.", niche: "Home Decor", earnings: "$47,280", period: "This Month", avatar: "JR" },
+  { name: "Lisa K.", niche: "Beauty", earnings: "$38,450", period: "This Month", avatar: "LK" },
+  { name: "Michael T.", niche: "Tech", earnings: "$31,200", period: "This Month", avatar: "MT" },
+  { name: "Sarah M.", niche: "Kitchen", earnings: "$28,900", period: "This Month", avatar: "SM" },
+  { name: "David P.", niche: "Fitness", earnings: "$24,100", period: "This Month", avatar: "DP" },
 ];
 
 export default function SocialProofPage() {
   return (
     <AppShell
       title="Live Results"
-      subtitle="Real earnings from real members like you"
+      subtitle="Real earnings from real members - updated in real-time"
       showBanner={false}
+      actions={<Badge tone="success" pulse>LIVE UPDATES</Badge>}
     >
-      {/* Stats Overview */}
-      <div className="grid gap-4 sm:grid-cols-4">
-        <div className="glass-money rounded-2xl p-6">
-          <DollarSign className="text-emerald-400" size={28} />
-          <p className="mt-3 text-3xl font-bold text-white money-glow">$847K</p>
-          <p className="text-sm text-slate-400">Earned this month</p>
-        </div>
-        <div className="glass-card rounded-2xl p-6">
-          <Users className="text-amber-400" size={28} />
-          <p className="mt-3 text-3xl font-bold text-white">12,483</p>
-          <p className="text-sm text-slate-400">Active members</p>
-        </div>
-        <div className="glass-card rounded-2xl p-6">
-          <TrendingUp className="text-amber-400" size={28} />
-          <p className="mt-3 text-3xl font-bold text-white">347</p>
-          <p className="text-sm text-slate-400">Earned today</p>
-        </div>
-        <div className="glass-card rounded-2xl p-6">
-          <Star className="text-amber-400 fill-amber-400" size={28} />
-          <p className="mt-3 text-3xl font-bold text-white">$214.36</p>
-          <p className="text-sm text-slate-400">Avg daily earnings</p>
-        </div>
+      {/* Community Stats */}
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {communityStats.map((stat) => (
+          <div 
+            key={stat.label} 
+            className={`rounded-2xl p-6 ${
+              stat.color === "emerald" ? "glass-money" : "glass-gold"
+            }`}
+          >
+            <stat.icon className={stat.color === "emerald" ? "text-emerald-400" : "text-amber-400"} size={28} />
+            <p className={`mt-4 text-3xl font-bold ${
+              stat.color === "emerald" ? "text-emerald-400" : "text-amber-400"
+            }`}>{stat.value}</p>
+            <p className="mt-1 text-slate-400">{stat.label}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Live Earnings Feed */}
-        <div className="glass-card rounded-3xl p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-white">Live Earnings</h2>
-            <Badge tone="success" pulse>LIVE</Badge>
-          </div>
-          <div className="mt-4 space-y-3 max-h-[400px] overflow-y-auto">
-            {socialFeed.map((item) => (
-              <div key={item.id} className="flex items-center justify-between rounded-xl bg-white/5 p-4">
-                <div>
-                  <p className="font-medium text-white">{item.headline}</p>
-                  <p className="flex items-center gap-1 text-xs text-slate-500 mt-1">
+      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        {/* Left Column */}
+        <div className="space-y-6">
+          {/* Live Earnings Feed */}
+          <div className="glass-money rounded-2xl p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <span className="absolute inline-flex h-3 w-3 animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-400"></span>
+                </div>
+                <h2 className="text-xl font-bold text-white">Live Earnings Feed</h2>
+              </div>
+              <Badge tone="success">REAL-TIME</Badge>
+            </div>
+            <p className="mt-1 text-slate-400">Watch money being made right now</p>
+
+            <div className="mt-6 space-y-3">
+              {socialFeed.map((item) => (
+                <div 
+                  key={item.id} 
+                  className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <p className="font-semibold text-white">{item.headline}</p>
+                      <p className="mt-1 text-sm text-slate-400">{item.detail}</p>
+                    </div>
+                    {item.pill && (
+                      <span className={`rounded-full px-3 py-1 text-sm font-bold ${
+                        item.pill.startsWith('+$') || item.pill.startsWith('$')
+                          ? "bg-emerald-500/20 text-emerald-400"
+                          : "bg-amber-500/20 text-amber-400"
+                      }`}>
+                        {item.pill}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-2 flex items-center gap-1 text-xs text-slate-500">
                     <Clock size={12} />
                     {item.ago}
                   </p>
                 </div>
-                {item.pill && (
-                  <span className={`rounded-full px-3 py-1 text-sm font-bold ${
-                    item.pill.startsWith('+$') ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"
+              ))}
+            </div>
+          </div>
+
+          {/* Success Stories */}
+          <div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-white">Member Success Stories</h2>
+              <Badge tone="gold">VERIFIED</Badge>
+            </div>
+            <p className="mt-1 text-slate-400">Real results from real people</p>
+
+            <div className="mt-6 space-y-4">
+              {testimonials.map((testimonial) => (
+                <div 
+                  key={testimonial.name} 
+                  className="rounded-xl border border-white/10 bg-white/5 p-5"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 text-lg font-bold text-black">
+                      {testimonial.avatar}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-bold text-white">{testimonial.name}</p>
+                          <p className="text-sm text-slate-400">{testimonial.niche} Niche</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-emerald-400">{testimonial.earnings}</p>
+                          <p className="text-xs text-slate-400">{testimonial.period}</p>
+                        </div>
+                      </div>
+                      <div className="mt-3 flex items-center gap-1 text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} size={14} className="fill-current" />
+                        ))}
+                      </div>
+                      <p className="mt-3 text-slate-300 italic">"{testimonial.quote}"</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* Top Earners */}
+          <div className="glass-gold rounded-2xl p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Flame className="text-amber-400" size={24} />
+                <h2 className="text-xl font-bold text-white">Top Earners</h2>
+              </div>
+              <Badge tone="gold">THIS MONTH</Badge>
+            </div>
+
+            <div className="mt-6 space-y-3">
+              {topEarners.map((earner, idx) => (
+                <div 
+                  key={earner.name} 
+                  className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4"
+                >
+                  <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold ${
+                    idx === 0 ? "bg-amber-500 text-black" :
+                    idx === 1 ? "bg-slate-300 text-black" :
+                    idx === 2 ? "bg-amber-700 text-white" :
+                    "bg-white/10 text-slate-400"
                   }`}>
-                    {item.pill}
+                    {idx + 1}
                   </span>
-                )}
-              </div>
-            ))}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 text-sm font-bold text-black">
+                    {earner.avatar}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-white">{earner.name}</p>
+                    <p className="text-xs text-slate-400">{earner.niche}</p>
+                  </div>
+                  <p className="text-lg font-bold text-emerald-400">{earner.earnings}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Top Earners */}
-        <div className="glass-gold rounded-3xl p-6">
-          <h2 className="text-xl font-bold text-white">Top Earners This Month</h2>
-          <p className="text-slate-400">People just like you crushing it</p>
-          <div className="mt-4 space-y-3">
-            {topEarners.map((earner) => (
-              <div key={earner.rank} className="flex items-center gap-4 rounded-xl bg-black/20 p-4">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold text-black ${
-                  earner.rank === 1 ? "bg-amber-400" : 
-                  earner.rank === 2 ? "bg-slate-300" : 
-                  earner.rank === 3 ? "bg-amber-600" : "bg-white/20 text-white"
-                }`}>
-                  #{earner.rank}
+          {/* Trending Niches */}
+          <div className="glass-card rounded-2xl p-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-white">Trending Niches</h2>
+              <Badge tone="success" pulse>HOT</Badge>
+            </div>
+            <p className="mt-1 text-slate-400">Highest earning potential right now</p>
+
+            <div className="mt-6 space-y-3">
+              {topNiches.map((niche, idx) => (
+                <div 
+                  key={niche.name} 
+                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 p-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/20 text-sm font-bold text-amber-400">
+                      {idx + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-white">{niche.name}</p>
+                      <p className="text-xs text-slate-400">{niche.avgEarnings} avg</p>
+                    </div>
+                  </div>
+                  <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                    <TrendingUp size={14} />
+                    {niche.growth}
+                  </span>
                 </div>
-                <div className="flex-1">
-                  <p className="font-medium text-white">{earner.name}</p>
-                  <p className="text-sm text-slate-400">{earner.niche}</p>
-                </div>
-                <span className="text-xl font-bold text-emerald-400">{earner.earnings}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Success Stories */}
-      <div className="glass-card rounded-3xl p-8">
-        <h2 className="text-2xl font-bold text-white text-center">Member Success Stories</h2>
-        <p className="text-center text-slate-400 mt-1">Hear from people who changed their lives</p>
-        
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <div key={t.name} className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <div className="flex items-center gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 text-lg font-bold text-black">
-                  {t.avatar}
-                </div>
-                <div>
-                  <p className="font-semibold text-white">{t.name}</p>
-                  <p className="text-sm text-slate-400">{t.niche}</p>
-                </div>
+          {/* Earnings Summary */}
+          <div className="glass-card rounded-2xl p-6">
+            <h2 className="text-lg font-bold text-white">Community Earnings</h2>
+            
+            <div className="mt-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Today</span>
+                <span className="text-xl font-bold text-emerald-400">${earningsData.today.toLocaleString()}</span>
               </div>
-              <div className="mt-4 flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => <Star key={i} size={14} className="fill-current" />)}
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">This Week</span>
+                <span className="text-xl font-bold text-white">${earningsData.thisWeek.toLocaleString()}</span>
               </div>
-              <p className="mt-3 text-slate-300 italic">&quot;{t.quote}&quot;</p>
-              <div className="mt-4 rounded-xl bg-emerald-500/10 p-3 text-center">
-                <p className="text-2xl font-bold text-emerald-400">{t.earnings}</p>
-                <p className="text-xs text-slate-400">{t.period}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">This Month</span>
+                <span className="text-xl font-bold text-white">${earningsData.thisMonth.toLocaleString()}</span>
+              </div>
+              <div className="h-px bg-white/10" />
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">All Time</span>
+                <span className="text-2xl font-bold text-amber-400">${earningsData.allTime.toLocaleString()}</span>
               </div>
             </div>
-          ))}
+          </div>
+
+          {/* Disclaimer */}
+          <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <p className="text-xs text-slate-500">
+              <strong className="text-slate-400">Results Disclaimer:</strong> Earnings shown are from real members but individual results vary. Success depends on effort, niche selection, and consistency. These are not guaranteed results.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* CTA */}
-      <div className="glass-money rounded-3xl p-8 text-center">
-        <h3 className="text-2xl font-bold text-white">Ready to Join Them?</h3>
-        <p className="mt-2 text-lg text-slate-300">Start your success story today</p>
-        <Link
-          href="/image-forge"
-          className="btn-premium mt-6 inline-flex items-center gap-3 rounded-xl px-10 py-5 text-xl font-bold text-black"
-        >
-          Create Your First Money-Making Image
-          <ArrowRight size={24} />
-        </Link>
+      <div className="glass-gold rounded-2xl p-8 text-center">
+        <h2 className="text-2xl font-bold text-white lg:text-3xl">
+          Ready to Join These Success Stories?
+        </h2>
+        <p className="mt-3 text-lg text-slate-300">
+          Start creating AI images now and you could be in this feed within days.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-4">
+          <Link
+            href="/image-forge"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition hover:-translate-y-1"
+          >
+            <Zap size={20} />
+            Start Creating Now
+          </Link>
+          <Link
+            href="/academy"
+            className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-4 font-semibold text-white transition hover:bg-white/15"
+          >
+            Watch Free Training
+            <ArrowRight size={18} />
+          </Link>
+        </div>
       </div>
-
-      {/* Disclaimer */}
-      <p className="text-xs text-slate-500 text-center max-w-2xl mx-auto">
-        Results shown are from real members but individual results vary. Success depends on effort, consistency, and market conditions. These testimonials represent exceptional results and are not typical.
-      </p>
     </AppShell>
   );
 }
