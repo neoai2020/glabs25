@@ -8,6 +8,7 @@ export function WelcomePopup() {
   const [pulse, setPulse] = useState(false);
 
   useEffect(() => {
+    if (sessionStorage.getItem("glabs_popup_seen")) return;
     const t = setTimeout(() => setOpen(true), 600);
     return () => clearTimeout(t);
   }, []);
@@ -18,6 +19,11 @@ export function WelcomePopup() {
     return () => clearInterval(i);
   }, [open]);
 
+  const dismiss = () => {
+    setOpen(false);
+    sessionStorage.setItem("glabs_popup_seen", "1");
+  };
+
   if (!open) return null;
 
   return (
@@ -25,7 +31,7 @@ export function WelcomePopup() {
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-[fadeIn_0.3s_ease]"
-        onClick={() => setOpen(false)}
+        onClick={dismiss}
       />
 
       {/* Modal */}
@@ -36,7 +42,7 @@ export function WelcomePopup() {
 
           {/* Close button */}
           <button
-            onClick={() => setOpen(false)}
+            onClick={dismiss}
             className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/60 transition hover:bg-white/20 hover:text-white"
           >
             <X size={18} />
