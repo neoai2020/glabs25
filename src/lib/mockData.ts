@@ -28,8 +28,8 @@ export const assets: Asset[] = [
     status: "generated",
     hasLink: true,
     linkId: "link-1",
-    imageUrl: "https://images.unsplash.com/photo-1508387024700-9fe5c0b36f47?auto=format&fit=crop&w=800&q=80",
-    caption: "Transform your workspace into a productivity paradise ✨",
+    imageUrl: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80",
+    caption: "Transform your workspace into a productivity paradise",
   },
   {
     id: "asset-2",
@@ -41,7 +41,7 @@ export const assets: Asset[] = [
     createdAt: "2026-01-18T15:20:00Z",
     status: "generated",
     hasLink: false,
-    imageUrl: "https://images.unsplash.com/photo-1506617420156-8e4536971650?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=800&q=80",
   },
   {
     id: "asset-3",
@@ -54,7 +54,7 @@ export const assets: Asset[] = [
     status: "imported",
     hasLink: true,
     linkId: "link-3",
-    imageUrl: "https://images.unsplash.com/photo-1506801310323-534be5e7edd5?auto=format&fit=crop&w=1000&q=80",
+    imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1000&q=80",
   },
 ];
 

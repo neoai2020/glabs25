@@ -1,299 +1,193 @@
 import Link from "next/link";
-import { 
-  Play, 
-  Sparkles, 
-  DollarSign, 
-  Rocket, 
-  TrendingUp, 
-  CheckCircle2,
-  ArrowRight,
-  Zap,
-  Clock,
-  Users
-} from "lucide-react";
+import { Play, Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/Badge";
-import { stats, checklist, socialFeed, testimonials, topNiches, earningsData } from "@/lib/mockData";
+import { LiveEarnings } from "@/components/ui/LiveEarnings";
 
 export default function Home() {
   return (
     <AppShell
-      title="Profit Dashboard"
-      subtitle="Your AI assistant is working around the clock to help you earn"
-      actions={
-        <div className="flex gap-3">
-          <Link
-            href="/image-forge"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 px-5 py-3 text-sm font-bold text-black shadow-lg shadow-amber-500/25 transition hover:-translate-y-0.5 hover:shadow-xl"
-          >
-            <Zap size={18} />
-            Create AI Images
-          </Link>
-          <Link
-            href="/launchpad"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            <Rocket size={18} />
-            Publish Now
-          </Link>
-        </div>
-      }
+      title="Welcome to G-Labs 95"
+      subtitle="Your AI-powered income system • Join 12,400+ members earning daily"
     >
-      {/* Earnings Overview */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard 
-          label="Estimated Today" 
-          value={earningsData.today.toLocaleString()} 
-          prefix="$"
-          helper="Based on clicks & conversions" 
-          tone="money"
-          icon="earnings"
-          trend="+12% from yesterday"
-        />
-        <StatCard 
-          label="AI Images Created" 
-          value={stats.imagesGenerated.toString()} 
-          helper="Ready to publish" 
-          icon="images"
-        />
-        <StatCard 
-          label="Revenue Links Active" 
-          value={stats.linksAttached.toString()} 
-          helper="Connected & earning" 
-          tone="gold"
-          icon="links"
-        />
-        <StatCard 
-          label="Posting Streak" 
-          value={`${stats.streakDays}`} 
-          helper="Days in a row • Keep going!" 
-          tone="success"
-          icon="streak"
-        />
-      </div>
+      {/* Hero Video Card - Above the fold */}
+      <div className="glass-gold rounded-3xl overflow-hidden">
+        <div className="grid lg:grid-cols-2">
+          {/* Video Section */}
+          <div className="relative aspect-video lg:aspect-auto bg-gradient-to-br from-amber-900/30 to-emerald-900/20 min-h-[300px]">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button className="group relative flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/20">
+                <div className="absolute inset-0 rounded-full bg-amber-500/20 animate-ping" />
+                <Play size={32} className="text-white fill-white ml-1" />
+              </button>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 video-overlay p-6">
+              <Badge tone="success" pulse>WATCH NOW</Badge>
+              <p className="mt-2 text-lg font-semibold text-white">How I Made $2,847 Last Week</p>
+              <p className="text-sm text-slate-300">10 minute training • No experience needed</p>
+            </div>
+          </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        {/* Left Column */}
-        <div className="space-y-6">
-          {/* Quick Start Checklist */}
-          <div className="glass-gold rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <Badge tone="gold" pulse>3 SIMPLE STEPS</Badge>
-                <h2 className="mt-3 text-xl font-bold text-white">Start Earning in Minutes</h2>
-                <p className="mt-1 text-slate-400">Follow these steps and our AI handles everything else</p>
-              </div>
-              <Link 
-                href="/academy" 
-                className="hidden items-center gap-2 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15 sm:inline-flex"
-              >
-                <Play size={16} />
-                Watch Tutorial
-              </Link>
+          {/* Content Section */}
+          <div className="p-8 lg:p-10">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-medium text-emerald-400">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              347 people earned money today
             </div>
             
-            <div className="mt-5 space-y-3">
-              {checklist.map((item, idx) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className={`flex items-center gap-4 rounded-xl border p-4 transition hover:-translate-y-0.5 ${
-                    item.done 
-                      ? "border-emerald-500/30 bg-emerald-500/10" 
-                      : "border-white/10 bg-white/5 hover:border-amber-500/30 hover:bg-amber-500/5"
-                  }`}
-                >
-                  <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-lg font-bold ${
-                    item.done 
-                      ? "bg-emerald-500/20 text-emerald-400" 
-                      : "bg-amber-500/20 text-amber-400"
-                  }`}>
-                    {item.done ? <CheckCircle2 size={20} /> : idx + 1}
-                  </span>
-                  <div className="flex-1">
-                    <p className={`font-semibold ${item.done ? "text-emerald-400" : "text-white"}`}>
-                      {item.label}
-                    </p>
-                    <p className="text-sm text-slate-400">
-                      {item.done ? "Completed! Great job." : "Click to start →"}
-                    </p>
-                  </div>
-                  {!item.done && <ArrowRight className="text-amber-400" size={20} />}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">Quick Actions</h2>
-              <Badge tone="gold">AI-POWERED</Badge>
-            </div>
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
-              {[
-                { 
-                  label: "Create Images", 
-                  href: "/image-forge", 
-                  icon: <Sparkles size={24} />, 
-                  desc: "AI generates stunning visuals in seconds",
-                  color: "amber"
-                },
-                { 
-                  label: "Add Profit Links", 
-                  href: "/monetization/link-vault", 
-                  icon: <DollarSign size={24} />, 
-                  desc: "Connect your affiliate and product links",
-                  color: "emerald"
-                },
-                { 
-                  label: "Publish & Earn", 
-                  href: "/launchpad", 
-                  icon: <Rocket size={24} />, 
-                  desc: "Post to Pinterest, Instagram & more",
-                  color: "amber"
-                },
-              ].map((cta) => (
-                <Link
-                  key={cta.label}
-                  href={cta.href}
-                  className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-amber-500/30 hover:bg-white/8 hover:shadow-lg hover:shadow-amber-500/10"
-                >
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${
-                    cta.color === "amber" ? "bg-amber-500/20 text-amber-400" : "bg-emerald-500/20 text-emerald-400"
-                  }`}>
-                    {cta.icon}
-                  </div>
-                  <div>
-                    <p className="text-lg font-bold text-white">{cta.label}</p>
-                    <p className="mt-1 text-sm text-slate-400">{cta.desc}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Top Niches */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">Top Earning Niches</h2>
-              <Badge tone="success" pulse>TRENDING</Badge>
-            </div>
-            <p className="mt-1 text-slate-400">Based on community performance this week</p>
-            <div className="mt-5 space-y-3">
-              {topNiches.map((niche, idx) => (
-                <div 
-                  key={niche.name} 
-                  className="flex items-center gap-4 rounded-xl border border-white/10 bg-white/5 p-4"
-                >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20 text-lg font-bold text-amber-400">
-                    {idx + 1}
-                  </span>
-                  <div className="flex-1">
-                    <p className="font-semibold text-white">{niche.name}</p>
-                    <p className="text-sm text-slate-400">Avg. {niche.avgEarnings}</p>
-                  </div>
-                  <span className="text-emerald-400 font-semibold">{niche.growth}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Live Earnings Feed */}
-          <div className="glass-money rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">Live Earnings</h2>
-              <Badge tone="success" pulse>LIVE</Badge>
-            </div>
-            <p className="mt-1 text-slate-400">Real results from our community</p>
-            <div className="mt-5 space-y-3">
-              {socialFeed.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <p className="font-semibold text-white">{item.headline}</p>
-                      <p className="mt-1 text-sm text-slate-400">{item.detail}</p>
-                    </div>
-                    {item.pill && (
-                      <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-bold text-emerald-400">
-                        {item.pill}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-2 flex items-center gap-1 text-xs text-slate-500">
-                    <Clock size={12} />
-                    {item.ago}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Success Stories */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white">Success Stories</h2>
-              <Badge tone="gold">VERIFIED</Badge>
-            </div>
-            <div className="mt-5 space-y-4">
-              {testimonials.slice(0, 2).map((testimonial) => (
-                <div 
-                  key={testimonial.name} 
-                  className="rounded-xl border border-white/10 bg-white/5 p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-emerald-500 text-sm font-bold text-black">
-                      {testimonial.avatar}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">{testimonial.name}</p>
-                      <p className="text-sm text-slate-400">{testimonial.niche}</p>
-                    </div>
-                    <div className="ml-auto text-right">
-                      <p className="text-lg font-bold text-emerald-400">{testimonial.earnings}</p>
-                      <p className="text-xs text-slate-400">{testimonial.period}</p>
-                    </div>
-                  </div>
-                  <p className="mt-3 text-sm text-slate-300 italic">"{testimonial.quote}"</p>
-                </div>
-              ))}
-            </div>
-            <Link 
-              href="/social-proof" 
-              className="mt-4 flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-            >
-              View All Success Stories
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-
-          {/* Quick Tips */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-2 text-amber-400">
-              <Zap size={18} />
-              <h2 className="text-lg font-bold">Pro Tip</h2>
-            </div>
-            <p className="mt-3 text-slate-300">
-              <strong className="text-white">Consistency wins.</strong> Members who post daily earn 
-              <span className="text-emerald-400 font-semibold"> 3x more </span> 
-              than those who post weekly. The AI makes it easy—just click publish.
+            <h2 className="mt-4 text-3xl font-bold text-white lg:text-4xl">
+              Your AI Creates <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Money-Making</span> Images
+            </h2>
+            
+            <p className="mt-4 text-lg text-slate-300">
+              Just pick a topic. Our AI does everything else — creates stunning images, writes captions, and shows you exactly how to post for maximum earnings.
             </p>
-            <Link 
-              href="/academy" 
-              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-amber-400 hover:text-amber-300"
+
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+                <span className="text-white">AI creates images that get clicks (no design skills needed)</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+                <span className="text-white">Your affiliate link earns you money on every sale</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="text-emerald-400 shrink-0" size={20} />
+                <span className="text-white">Works while you sleep — 24/7 passive income</span>
+              </div>
+            </div>
+
+            <Link
+              href="/image-forge"
+              className="btn-premium mt-8 flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-black transition-all hover:scale-[1.02]"
             >
-              Learn More Strategies
-              <ArrowRight size={14} />
+              <Zap size={20} />
+              Start Making Money Now
+              <ArrowRight size={20} />
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* Stats Row */}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <div className="glass-money rounded-2xl p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20">
+              <DollarSign className="text-emerald-400" size={24} />
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-white money-glow">$847,230</p>
+              <p className="text-sm text-slate-400">Earned by members this month</p>
+            </div>
+          </div>
+        </div>
+        <div className="glass-card rounded-2xl p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/20">
+              <Users className="text-amber-400" size={24} />
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-white">12,483</p>
+              <p className="text-sm text-slate-400">Active members worldwide</p>
+            </div>
+          </div>
+        </div>
+        <div className="glass-card rounded-2xl p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/20">
+              <TrendingUp className="text-amber-400" size={24} />
+            </div>
+            <div>
+              <p className="text-3xl font-bold text-white">$214.36</p>
+              <p className="text-sm text-slate-400">Average daily earnings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Simple 3-Step Process */}
+      <div className="glass-card rounded-3xl p-8">
+        <h2 className="text-2xl font-bold text-white text-center">Your 3-Step Money-Making System</h2>
+        <p className="text-center text-slate-400 mt-2">Follow these steps in order to maximize your earnings</p>
+        
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {/* Step 1 */}
+          <Link href="/image-forge" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-amber-500/30 hover:bg-white/8">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-xl font-bold text-black shadow-lg shadow-amber-500/30">
+                1
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-white">Create AI Images</h3>
+                <p className="text-sm text-slate-400">Pick a niche, AI makes the images</p>
+              </div>
+              <ImageIcon className="text-amber-400" size={24} />
+            </div>
+            <p className="mt-4 text-slate-300">Choose from proven money-making topics. Our AI creates stunning, click-worthy images in seconds.</p>
+            <div className="mt-4 flex items-center gap-2 text-amber-400 font-medium">
+              Start here <ArrowRight size={16} />
+            </div>
+          </Link>
+
+          {/* Step 2 */}
+          <Link href="/monetization/link-vault" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-emerald-500/30 hover:bg-white/8">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-xl font-bold text-black shadow-lg shadow-emerald-500/30">
+                2
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-white">Add Your Money Link</h3>
+                <p className="text-sm text-slate-400">Connect your affiliate link</p>
+              </div>
+              <Link2 className="text-emerald-400" size={24} />
+            </div>
+            <p className="mt-4 text-slate-300">Add your Amazon, Etsy, or other affiliate link. Every click = potential money in your pocket.</p>
+            <div className="mt-4 flex items-center gap-2 text-emerald-400 font-medium">
+              Add link <ArrowRight size={16} />
+            </div>
+          </Link>
+
+          {/* Step 3 */}
+          <Link href="/launchpad" className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:border-amber-500/30 hover:bg-white/8">
+            <div className="flex items-center gap-4">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-emerald-500 text-xl font-bold text-black shadow-lg shadow-amber-500/30">
+                3
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-white">Publish & Earn</h3>
+                <p className="text-sm text-slate-400">Post to Pinterest & more</p>
+              </div>
+              <Rocket className="text-amber-400" size={24} />
+            </div>
+            <p className="mt-4 text-slate-300">Follow our step-by-step guides to post on Pinterest, Instagram, TikTok, and Facebook.</p>
+            <div className="mt-4 flex items-center gap-2 text-amber-400 font-medium">
+              See how <ArrowRight size={16} />
+            </div>
+          </Link>
+        </div>
+      </div>
+
+      {/* Live Earnings */}
+      <LiveEarnings />
+
+      {/* Final CTA */}
+      <div className="glass-gold rounded-3xl p-8 text-center">
+        <h2 className="text-2xl font-bold text-white">Ready to Start Earning?</h2>
+        <p className="mt-2 text-lg text-slate-300">Create your first AI image and start your income journey today</p>
+        <Link
+          href="/image-forge"
+          className="btn-premium mt-6 inline-flex items-center gap-3 rounded-xl px-10 py-5 text-xl font-bold text-black"
+        >
+          <Sparkles size={24} />
+          Create Your First Image
+          <ArrowRight size={24} />
+        </Link>
+        <p className="mt-4 text-slate-400">No credit card • No experience needed • Start earning in minutes</p>
       </div>
     </AppShell>
   );

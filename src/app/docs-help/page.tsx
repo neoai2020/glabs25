@@ -1,223 +1,173 @@
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
-import { docTips } from "@/lib/mockData";
-import { 
-  HelpCircle, 
-  MessageCircle, 
-  Mail, 
-  BookOpen,
-  CheckCircle2,
-  XCircle,
-  Zap,
-  ArrowRight,
-  Search
-} from "lucide-react";
+import { HelpCircle, MessageCircle, Mail, ChevronRight, Phone, CheckCircle2, Play, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 const faqs = [
-  {
-    question: "How quickly can I start earning?",
-    answer: "Most members see their first earnings within 3-7 days. It depends on how many images you create and publish. The more you post, the faster you earn."
+  { 
+    q: "How quickly can I start making money?", 
+    a: "Most members see their first earnings within 3-7 days of posting consistently. Some see results faster depending on their niche and how many images they publish." 
   },
-  {
-    question: "Do I need any technical skills?",
-    answer: "No! The AI does all the hard work. You just describe what you want, and it creates the images. Then you click publish. It's that simple."
+  { 
+    q: "Do I need any technical skills?", 
+    a: "No! The AI does everything for you. Just pick a topic, and the system creates beautiful images automatically. If you can click a button, you can do this." 
   },
-  {
-    question: "What are the best niches to start with?",
-    answer: "Home office, skincare, and kitchen gadgets are currently the top earners. Check the 'Live Results' page to see what's trending."
+  { 
+    q: "What's an affiliate link and where do I get one?", 
+    a: "An affiliate link is a special URL that tracks sales. When someone buys through your link, you earn a commission. Get one free from Amazon Associates, Etsy Affiliates, or other programs. We explain everything in the Money Links section." 
   },
-  {
-    question: "How do I connect my affiliate links?",
-    answer: "Go to 'Revenue Links' and click 'Add New Link'. Paste your Amazon, Etsy, or any affiliate link. It will automatically attach to your posts."
+  { 
+    q: "How much can I realistically earn?", 
+    a: "Our average member earns about $214.36/day. Top earners make $500-1,000/day. It depends on how consistently you follow our system." 
   },
-  {
-    question: "Why aren't my posts getting clicks?",
-    answer: "Make sure you're posting at peak times (8-11 PM), using vertical images for Pinterest, and including 3-5 relevant hashtags."
+  { 
+    q: "Which platform should I start with?", 
+    a: "Pinterest is the best place to start. You don't need followers, posts stay visible for months, and it has the highest earning potential. Our Cash Out section has step-by-step instructions." 
+  },
+  { 
+    q: "How do I get paid?", 
+    a: "Your affiliate program pays you directly. Amazon pays monthly via bank transfer or gift card. Most programs have a minimum payout threshold of $10-100." 
   },
 ];
+
+// Support link placeholder
+const supportLink = "#support";
 
 export default function DocsHelpPage() {
   return (
     <AppShell
       title="Help Center"
-      subtitle="Everything you need to succeed - FAQs, tips, and support"
-      showBanner={false}
-      actions={<Badge tone="success">24/7 SUPPORT</Badge>}
+      subtitle="Get answers to your questions"
     >
-      {/* Search */}
-      <div className="glass-card rounded-2xl p-6">
-        <div className="relative">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" size={20} />
-          <input
-            type="text"
-            placeholder="Search for answers..."
-            className="w-full rounded-xl border border-white/10 bg-black/40 py-4 pl-12 pr-4 text-lg text-white placeholder:text-slate-500 focus:border-amber-500/50 focus:outline-none"
-          />
+      {/* Quick Start Banner */}
+      <div className="glass-gold rounded-3xl p-8">
+        <div className="flex flex-col items-center text-center lg:flex-row lg:text-left lg:justify-between gap-6">
+          <div className="flex flex-col lg:flex-row items-center gap-6">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/20">
+              <Play size={28} className="text-amber-400 fill-amber-400 ml-1" />
+            </div>
+            <div>
+              <Badge tone="gold">RECOMMENDED</Badge>
+              <h2 className="mt-2 text-2xl font-bold text-white">New here? Watch this first</h2>
+              <p className="text-slate-300">10-minute video that shows you exactly how to make money</p>
+            </div>
+          </div>
+          <Link href="/academy" className="btn-premium flex items-center gap-2 rounded-xl px-6 py-3 font-semibold text-black">
+            Watch Training
+            <ArrowRight size={18} />
+          </Link>
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-        {/* Left Column */}
-        <div className="space-y-6">
-          {/* FAQs */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-3">
-              <HelpCircle className="text-amber-400" size={24} />
-              <h2 className="text-xl font-bold text-white">Frequently Asked Questions</h2>
-            </div>
+      {/* FAQs */}
+      <div className="glass-card rounded-3xl p-8">
+        <h2 className="text-xl font-bold text-white">Frequently Asked Questions</h2>
+        <p className="text-slate-400 mt-1">Click any question to see the answer</p>
+        
+        <div className="mt-6 space-y-3">
+          {faqs.map((faq) => (
+            <details key={faq.q} className="group rounded-2xl border border-white/10 bg-white/5">
+              <summary className="flex cursor-pointer items-center justify-between p-5">
+                <span className="font-medium text-white pr-4">{faq.q}</span>
+                <ChevronRight size={20} className="text-slate-500 transition group-open:rotate-90 shrink-0" />
+              </summary>
+              <div className="border-t border-white/5 px-5 py-4">
+                <p className="text-slate-300 leading-relaxed">{faq.a}</p>
+              </div>
+            </details>
+          ))}
+        </div>
+      </div>
 
-            <div className="mt-5 space-y-4">
-              {faqs.map((faq) => (
-                <div 
-                  key={faq.question} 
-                  className="rounded-xl border border-white/10 bg-white/5 p-5"
-                >
-                  <h3 className="text-lg font-semibold text-white">{faq.question}</h3>
-                  <p className="mt-2 text-slate-300">{faq.answer}</p>
-                </div>
-              ))}
-            </div>
+      {/* Quick Tips */}
+      <div className="glass-card rounded-3xl p-8">
+        <h2 className="text-xl font-bold text-white">Tips for Success</h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5">
+            <p className="font-semibold text-emerald-400">✓ DO THIS</p>
+            <ul className="mt-3 space-y-2">
+              <li className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 size={18} className="text-emerald-400 mt-0.5 shrink-0" />
+                Post 5-10 images per day to Pinterest
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 size={18} className="text-emerald-400 mt-0.5 shrink-0" />
+                Stick to 1-2 niches you know
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 size={18} className="text-emerald-400 mt-0.5 shrink-0" />
+                Be patient - results grow over time
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <CheckCircle2 size={18} className="text-emerald-400 mt-0.5 shrink-0" />
+                Use the AI-recommended prompts
+              </li>
+            </ul>
           </div>
-
-          {/* Quick Tips */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-3">
-              <Zap className="text-amber-400" size={24} />
-              <h2 className="text-xl font-bold text-white">Pro Tips</h2>
-            </div>
-
-            <div className="mt-5 space-y-3">
-              {docTips.map((tip) => (
-                <div 
-                  key={tip} 
-                  className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4"
-                >
-                  <CheckCircle2 className="mt-0.5 text-emerald-400 flex-shrink-0" size={18} />
-                  <p className="text-slate-300">{tip}</p>
-                </div>
-              ))}
-            </div>
+          <div className="rounded-2xl border border-rose-500/20 bg-rose-500/5 p-5">
+            <p className="font-semibold text-rose-400">✗ AVOID THIS</p>
+            <ul className="mt-3 space-y-2">
+              <li className="flex items-start gap-2 text-slate-300">
+                <span className="text-rose-400 shrink-0 mt-0.5">✗</span>
+                Posting just 1-2 images and giving up
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <span className="text-rose-400 shrink-0 mt-0.5">✗</span>
+                Jumping between too many niches
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <span className="text-rose-400 shrink-0 mt-0.5">✗</span>
+                Expecting overnight riches
+              </li>
+              <li className="flex items-start gap-2 text-slate-300">
+                <span className="text-rose-400 shrink-0 mt-0.5">✗</span>
+                Forgetting to add your affiliate link
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
 
-        {/* Right Column */}
-        <div className="space-y-6">
-          {/* Do's and Don'ts */}
-          <div className="space-y-4">
-            <div className="glass-money rounded-2xl p-6">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="text-emerald-400" size={20} />
-                <h3 className="text-lg font-bold text-white">Do This</h3>
-              </div>
-              <ul className="mt-4 space-y-3">
-                {[
-                  "Post consistently - daily is best",
-                  "Use vertical images for Pinterest",
-                  "Add 3-5 relevant hashtags",
-                  "Write engaging captions",
-                  "Track what works and do more of it"
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-slate-300">
-                    <CheckCircle2 size={16} className="mt-0.5 text-emerald-400 flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+      {/* Contact Support */}
+      <div className="glass-card rounded-3xl p-8">
+        <h2 className="text-xl font-bold text-white">Need More Help?</h2>
+        <p className="text-slate-400 mt-1">Our support team is here for you</p>
+        
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <a href={supportLink} className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:bg-white/8 hover:border-emerald-500/30">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-500/20">
+              <MessageCircle className="text-emerald-400" size={28} />
             </div>
-
-            <div className="glass-card rounded-2xl border-rose-500/20 p-6">
-              <div className="flex items-center gap-2">
-                <XCircle className="text-rose-400" size={20} />
-                <h3 className="text-lg font-bold text-white">Avoid This</h3>
-              </div>
-              <ul className="mt-4 space-y-3">
-                {[
-                  "Spamming too many posts at once",
-                  "Using irrelevant or too many hashtags",
-                  "Posting without a profit link",
-                  "Giving up after a few days",
-                  "Copying exact content from others"
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-slate-300">
-                    <XCircle size={16} className="mt-0.5 text-rose-400 flex-shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+            <div>
+              <p className="text-lg font-semibold text-white">Live Chat</p>
+              <p className="text-slate-400">Get help instantly</p>
+              <Badge tone="success" size="sm">Online Now</Badge>
             </div>
-          </div>
-
-          {/* Contact Support */}
-          <div className="glass-gold rounded-2xl p-6">
-            <h3 className="text-lg font-bold text-white">Need More Help?</h3>
-            <p className="mt-2 text-slate-300">Our support team is here to help you succeed</p>
-            
-            <div className="mt-5 space-y-3">
-              <a 
-                href="#" 
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                  <MessageCircle className="text-amber-400" size={20} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-white">Live Chat</p>
-                  <p className="text-sm text-slate-400">Get instant help</p>
-                </div>
-                <ArrowRight className="text-slate-400" size={18} />
-              </a>
-              
-              <a 
-                href="mailto:support@profitflow.ai" 
-                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 transition hover:bg-white/10"
-              >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                  <Mail className="text-amber-400" size={20} />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-white">Email Support</p>
-                  <p className="text-sm text-slate-400">support@profitflow.ai</p>
-                </div>
-                <ArrowRight className="text-slate-400" size={18} />
-              </a>
+          </a>
+          <a href="mailto:support@glabs95.com" className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:bg-white/8 hover:border-amber-500/30">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-amber-500/20">
+              <Mail className="text-amber-400" size={28} />
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-2">
-              <BookOpen className="text-amber-400" size={20} />
-              <h3 className="text-lg font-bold text-white">Quick Links</h3>
+            <div>
+              <p className="text-lg font-semibold text-white">Email Us</p>
+              <p className="text-slate-400">support@glabs95.com</p>
+              <p className="text-xs text-slate-500">Usually replies in 2-4 hours</p>
             </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              <Link 
-                href="/academy" 
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Free Training
-              </Link>
-              <Link 
-                href="/image-forge" 
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Create Images
-              </Link>
-              <Link 
-                href="/monetization/link-vault" 
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Add Links
-              </Link>
-              <Link 
-                href="/launchpad" 
-                className="rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-white hover:bg-white/10"
-              >
-                Publish Now
-              </Link>
-            </div>
-          </div>
+          </a>
         </div>
+      </div>
+
+      {/* CTA */}
+      <div className="text-center">
+        <p className="text-lg text-slate-300">Ready to start earning?</p>
+        <Link
+          href="/image-forge"
+          className="btn-premium mt-4 inline-flex items-center gap-3 rounded-xl px-10 py-5 text-xl font-bold text-black"
+        >
+          <Sparkles size={24} />
+          Create Your First Image
+          <ArrowRight size={24} />
+        </Link>
       </div>
     </AppShell>
   );

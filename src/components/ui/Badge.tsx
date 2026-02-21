@@ -2,43 +2,33 @@ import clsx from "clsx";
 
 type Props = {
   children: React.ReactNode;
-  tone?: "default" | "success" | "warning" | "danger" | "info" | "gold" | "money";
+  tone?: "default" | "success" | "warning" | "danger" | "info" | "gold";
   size?: "sm" | "md";
   pulse?: boolean;
 };
 
 export function Badge({ children, tone = "default", size = "sm", pulse = false }: Props) {
   const toneClass = {
-    default: "bg-white/10 text-white border-white/20",
-    success: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    warning: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-    danger: "bg-rose-500/20 text-rose-400 border-rose-500/30",
-    info: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-    gold: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-    money: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    default: "bg-white/10 text-white",
+    success: "bg-emerald-500/20 text-emerald-400",
+    warning: "bg-amber-500/20 text-amber-400",
+    danger: "bg-rose-500/20 text-rose-400",
+    info: "bg-blue-500/20 text-blue-400",
+    gold: "bg-amber-500/20 text-amber-400",
   }[tone];
 
-  const sizeClass = {
-    sm: "text-xs px-2.5 py-1",
-    md: "text-sm px-3 py-1.5",
-  }[size];
+  const sizeClass = size === "sm" ? "text-xs px-2 py-0.5" : "text-sm px-3 py-1";
 
   return (
     <span className={clsx(
-      "inline-flex items-center gap-1.5 rounded-full font-semibold uppercase tracking-wider border",
+      "inline-flex items-center gap-1.5 rounded-full font-medium",
       toneClass,
       sizeClass
     )}>
       {pulse && (
-        <span className="relative flex h-2 w-2">
-          <span className={clsx(
-            "absolute inline-flex h-full w-full animate-ping rounded-full opacity-75",
-            tone === "success" || tone === "money" ? "bg-emerald-400" : "bg-amber-400"
-          )}></span>
-          <span className={clsx(
-            "relative inline-flex h-2 w-2 rounded-full",
-            tone === "success" || tone === "money" ? "bg-emerald-400" : "bg-amber-400"
-          )}></span>
+        <span className="relative flex h-1.5 w-1.5">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
         </span>
       )}
       {children}

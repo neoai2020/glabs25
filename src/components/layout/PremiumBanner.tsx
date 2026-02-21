@@ -42,7 +42,9 @@ export function PremiumBanner() {
           </p>
           
           <a
-            href="#"
+            href="https://www.jvzoo.com/c/86517/415009"
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-5 inline-flex items-center gap-2 rounded-lg bg-amber-400 px-6 py-3 text-sm font-bold text-black shadow-lg shadow-black/20 transition hover:bg-amber-300 hover:scale-105"
           >
             Click Here To Watch FREE Training
