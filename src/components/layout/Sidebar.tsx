@@ -12,6 +12,10 @@ import {
   User,
   Zap,
   MessageCircle,
+  Gem,
+  Sparkles,
+  BotMessageSquare,
+  Crown,
 } from "lucide-react";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -29,20 +33,25 @@ const mainNav: NavItem[] = [
   { label: "Cash Out", href: "/launchpad", icon: <Rocket size={20} /> },
 ];
 
+const premiumNav: NavItem[] = [
+  { label: "DFY Images", href: "/premium/dfy", icon: <Gem size={20} /> },
+  { label: "Instant Income", href: "/premium/instant-income", icon: <Sparkles size={20} /> },
+  { label: "Autopilot", href: "/premium/autopilot", icon: <BotMessageSquare size={20} /> },
+];
+
 const secondaryNav: NavItem[] = [
   { label: "Start Tour", href: "/academy", icon: <Map size={20} /> },
   { label: "Help Center", href: "/docs-help", icon: <HelpCircle size={20} /> },
   { label: "My Account", href: "/account", icon: <User size={20} /> },
 ];
 
-// Support desk link - to be updated
 const supportLink = "#support";
 
 export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden h-screen w-[280px] shrink-0 flex-col border-r border-white/5 bg-black/60 backdrop-blur-xl lg:flex">
+    <aside className="hidden h-screen w-[280px] shrink-0 flex-col border-r border-white/5 bg-black/60 backdrop-blur-xl lg:flex overflow-y-auto">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 via-amber-500 to-emerald-500 shadow-lg shadow-amber-500/20">
@@ -55,7 +64,7 @@ export function Sidebar() {
       </div>
 
       {/* Main Navigation */}
-      <nav className="mt-4 flex-1 space-y-1 px-4">
+      <nav className="mt-2 space-y-1 px-4">
         {mainNav.map((item) => {
           const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
           return (
@@ -83,8 +92,43 @@ export function Sidebar() {
         })}
       </nav>
 
+      {/* Premium Upgrades */}
+      <div className="mt-6 px-4">
+        <div className="mb-3 flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500/15 to-amber-600/10 border border-amber-500/25 px-4 py-2">
+          <Crown size={14} className="text-amber-400" />
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Premium Upgrades</span>
+        </div>
+        <nav className="space-y-1">
+          {premiumNav.map((item) => {
+            const active = pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={clsx(
+                  "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all border",
+                  active
+                    ? "border-amber-500/40 bg-amber-500/15 text-amber-400 shadow-lg shadow-amber-500/10"
+                    : "border-amber-500/10 text-amber-400/70 hover:border-amber-500/30 hover:bg-amber-500/10 hover:text-amber-400"
+                )}
+              >
+                <span className={clsx(
+                  "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+                  active
+                    ? "bg-amber-500 text-black shadow-md"
+                    : "bg-amber-500/10 text-amber-500/70"
+                )}>
+                  {item.icon}
+                </span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
       {/* Divider */}
-      <div className="mx-4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="mx-4 mt-4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
       {/* Secondary Navigation */}
       <nav className="mt-4 space-y-1 px-4">
@@ -126,27 +170,6 @@ export function Sidebar() {
             </div>
           </div>
         </a>
-      </div>
-
-      {/* Tour Card */}
-      <div className="m-4 mt-0">
-        <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 to-emerald-500/5 p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20">
-              <Map size={16} className="text-amber-400" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white">Income Tour</p>
-              <p className="text-xs text-slate-400">See how members earn daily</p>
-            </div>
-          </div>
-          <Link
-            href="/academy"
-            className="mt-4 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 py-2.5 text-sm font-semibold text-black transition hover:from-amber-400 hover:to-amber-500"
-          >
-            Take The Tour
-          </Link>
-        </div>
       </div>
     </aside>
   );
