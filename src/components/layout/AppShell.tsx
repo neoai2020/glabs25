@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { PremiumBanner } from "./PremiumBanner";
 import { WelcomePopup } from "../ui/WelcomePopup";
+import { WithdrawPopup } from "../ui/WithdrawPopup";
 import clsx from "clsx";
 
 type Props = {
@@ -19,6 +20,7 @@ export function AppShell({ title, subtitle, actions, children, className, showBa
   return (
     <div className="flex min-h-screen bg-[#0a0a0f]">
       <WelcomePopup />
+      <WithdrawPopup />
       <Sidebar />
       <main className="flex-1 overflow-auto px-6 py-8 lg:px-12">
         {/* Premium Banner - Shows on all pages */}
