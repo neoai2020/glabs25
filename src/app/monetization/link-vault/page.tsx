@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { 
@@ -8,9 +8,20 @@ import {
   Copy, HelpCircle, Trash2, AlertCircle
 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
-// Example saved links
-const savedLinks = [
+type SavedLink = {
+  id: string;
+  name: string;
+  url: string;
+  network: string;
+  isDefault: boolean;
+  earnings: string;
+};
+
+const STORAGE_KEY_PREFIX = "glabs_money_links_";
+
+const defaultSavedLinks: SavedLink[] = [
   {
     id: "1",
     name: "My Amazon Affiliate Link",
@@ -21,19 +32,52 @@ const savedLinks = [
   }
 ];
 
+function loadLinks(userId: string | undefined): SavedLink[] {
+  if (typeof window === "undefined") return defaultSavedLinks;
+  try {
+    const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) return JSON.parse(stored);
+  } catch { /* ignore corrupt data */ }
+  return defaultSavedLinks;
+}
+
+function saveLinks(userId: string | undefined, links: SavedLink[]) {
+  if (typeof window === "undefined") return;
+  try {
+    const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
+    localStorage.setItem(key, JSON.stringify(links));
+  } catch { /* storage full / unavailable */ }
+}
+
 export default function LinkVaultPage() {
-  const [links, setLinks] = useState(savedLinks);
+  const { user } = useAuth();
+  const [links, setLinks] = useState<SavedLink[]>([]);
+  const [hydrated, setHydrated] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newLinkName, setNewLinkName] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  
+
+  useEffect(() => {
+    setLinks(loadLinks(user?.id));
+    setHydrated(true);
+  }, [user?.id]);
+
+  const persistLinks = useCallback(
+    (next: SavedLink[]) => {
+      setLinks(next);
+      saveLinks(user?.id, next);
+    },
+    [user?.id]
+  );
+
   const defaultLink = links.find(l => l.isDefault);
 
   const handleAddLink = () => {
     if (!newLinkName || !newLinkUrl) return;
     
-    const newLink = {
+    const newLink: SavedLink = {
       id: Date.now().toString(),
       name: newLinkName,
       url: newLinkUrl,
@@ -44,18 +88,18 @@ export default function LinkVaultPage() {
       earnings: "$0"
     };
     
-    setLinks([...links, newLink]);
+    persistLinks([...links, newLink]);
     setNewLinkName("");
     setNewLinkUrl("");
     setShowAddForm(false);
   };
 
   const setDefaultLink = (id: string) => {
-    setLinks(links.map(l => ({ ...l, isDefault: l.id === id })));
+    persistLinks(links.map(l => ({ ...l, isDefault: l.id === id })));
   };
 
   const deleteLink = (id: string) => {
-    setLinks(links.filter(l => l.id !== id));
+    persistLinks(links.filter(l => l.id !== id));
   };
 
   const copyLink = (id: string, url: string) => {
@@ -211,7 +255,7 @@ export default function LinkVaultPage() {
         )}
 
         {/* Saved links list */}
-        {links.length === 0 ? (
+        {!hydrated ? null : links.length === 0 ? (
           <div className="mt-6 rounded-2xl border-2 border-dashed border-white/10 p-8 text-center">
             <AlertCircle className="mx-auto text-amber-400" size={40} />
             <h3 className="mt-4 text-lg font-semibold text-white">No links saved yet</h3>
