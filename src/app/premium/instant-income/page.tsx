@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import {
@@ -17,7 +17,11 @@ import {
   Zap,
   Eye,
   ExternalLink,
+  ChevronDown,
+  Save,
+  X,
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 type Post = {
   id: string;
@@ -118,11 +122,56 @@ const POSTS: Post[] = [
   { id: "hg-7", niche: "Home & Garden", post: "The easiest way to keep your house spotless. I was blown away: [LINK]", earningsMin: 50, earningsMax: 150 },
 ];
 
+type SavedLink = {
+  id: string;
+  name: string;
+  url: string;
+  network: string;
+  isDefault: boolean;
+  earnings: string;
+};
+
+const STORAGE_KEY_PREFIX = "glabs_money_links_";
+
+function loadSavedLinks(userId: string | undefined): SavedLink[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return [];
+}
+
+function persistSavedLinks(userId: string | undefined, links: SavedLink[]) {
+  if (typeof window === "undefined") return;
+  try {
+    const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
+    localStorage.setItem(key, JSON.stringify(links));
+  } catch {}
+}
+
 export default function InstantIncomePage() {
+  const { user } = useAuth();
   const [activeNiche, setActiveNiche] = useState<string>("All");
   const [affiliateLink, setAffiliateLink] = useState("");
   const [showPosts, setShowPosts] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const [savedLinks, setSavedLinks] = useState<SavedLink[]>([]);
+  const [showSavePopup, setShowSavePopup] = useState(false);
+  const [saveLinkName, setSaveLinkName] = useState("");
+  const [savedSuccessfully, setSavedSuccessfully] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    setSavedLinks(loadSavedLinks(user?.id));
+  }, [user?.id]);
+
+  const isLinkAlreadySaved = useCallback(
+    (url: string) => savedLinks.some((l) => l.url === url.trim()),
+    [savedLinks]
+  );
 
   const filteredPosts = useMemo(
     () => activeNiche === "All" ? POSTS : POSTS.filter((p) => p.niche === activeNiche),
@@ -137,7 +186,40 @@ export default function InstantIncomePage() {
   };
 
   const handleShowPosts = () => {
-    if (affiliateLink.trim()) setShowPosts(true);
+    if (!affiliateLink.trim()) return;
+    setShowPosts(true);
+    if (!isLinkAlreadySaved(affiliateLink)) {
+      setShowSavePopup(true);
+      setSavedSuccessfully(false);
+      setSaveLinkName("");
+    }
+  };
+
+  const handleSelectSavedLink = (url: string) => {
+    setAffiliateLink(url);
+    setShowDropdown(false);
+    if (showPosts) setShowPosts(true);
+  };
+
+  const handleSaveLink = () => {
+    if (!saveLinkName.trim() || !affiliateLink.trim()) return;
+    const url = affiliateLink.trim();
+    const newLink: SavedLink = {
+      id: Date.now().toString(),
+      name: saveLinkName.trim(),
+      url,
+      network: url.includes("amazon") ? "Amazon" :
+               url.includes("etsy") ? "Etsy" :
+               url.includes("walmart") ? "Walmart" :
+               url.includes("digistore") ? "DigiStore24" : "Affiliate",
+      isDefault: savedLinks.length === 0,
+      earnings: "$0",
+    };
+    const updated = [...savedLinks, newLink];
+    setSavedLinks(updated);
+    persistSavedLinks(user?.id, updated);
+    setSavedSuccessfully(true);
+    setTimeout(() => setShowSavePopup(false), 1500);
   };
 
   return (
@@ -269,8 +351,48 @@ export default function InstantIncomePage() {
           <h3 className="text-xl font-bold text-white">Your Affiliate Link</h3>
         </div>
         <p className="mb-5 text-slate-400">
-          Paste your affiliate link below. Every <code className="rounded bg-white/10 px-1.5 py-0.5 text-amber-400">[LINK]</code> in the posts will be replaced with your link.
+          Paste your affiliate link below or choose from your saved Money Links. Every <code className="rounded bg-white/10 px-1.5 py-0.5 text-amber-400">[LINK]</code> in the posts will be replaced with your link.
         </p>
+
+        {/* Saved links selector */}
+        {savedLinks.length > 0 && (
+          <div className="relative mb-4">
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-white/5 px-5 py-3.5 text-left text-slate-300 transition hover:border-amber-500/30 hover:bg-white/8"
+            >
+              <span className="flex items-center gap-2">
+                <Save size={16} className="text-amber-400" />
+                Choose from your saved Money Links
+              </span>
+              <ChevronDown size={18} className={`text-slate-400 transition ${showDropdown ? "rotate-180" : ""}`} />
+            </button>
+            {showDropdown && (
+              <div className="absolute left-0 right-0 top-full z-20 mt-2 max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-slate-900 shadow-2xl">
+                {savedLinks.map((link) => (
+                  <button
+                    key={link.id}
+                    onClick={() => handleSelectSavedLink(link.url)}
+                    className={`flex w-full items-center gap-3 px-5 py-3.5 text-left transition hover:bg-white/10 ${
+                      affiliateLink === link.url ? "bg-amber-500/10" : ""
+                    }`}
+                  >
+                    <DollarSign size={16} className={link.isDefault ? "text-emerald-400" : "text-amber-400"} />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-white">{link.name}</p>
+                      <p className="truncate text-xs text-slate-500">{link.url}</p>
+                    </div>
+                    {link.isDefault && (
+                      <span className="shrink-0 rounded-full bg-emerald-500/20 px-2 py-0.5 text-xs font-medium text-emerald-400">
+                        Active
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="flex flex-col gap-4 sm:flex-row">
           <input
@@ -293,6 +415,77 @@ export default function InstantIncomePage() {
           </button>
         </div>
       </div>
+
+      {/* Save-to-Money-Links popup */}
+      {showSavePopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="relative mx-4 w-full max-w-md rounded-3xl border border-white/10 bg-slate-900 p-8 shadow-2xl">
+            <button
+              onClick={() => setShowSavePopup(false)}
+              className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-white/10 hover:text-white"
+            >
+              <X size={20} />
+            </button>
+
+            {savedSuccessfully ? (
+              <div className="text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
+                  <CheckCircle2 size={36} className="text-emerald-400" />
+                </div>
+                <h3 className="mt-4 text-xl font-bold text-white">Link Saved!</h3>
+                <p className="mt-2 text-slate-400">Your link has been saved to Money Links.</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/20">
+                    <Save size={24} className="text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white">Save This Link?</h3>
+                    <p className="text-sm text-slate-400">Save to Money Links for easy reuse</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300">Link Name</label>
+                    <input
+                      type="text"
+                      value={saveLinkName}
+                      onChange={(e) => setSaveLinkName(e.target.value)}
+                      placeholder="e.g., My DigiStore Link"
+                      className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 p-3.5 text-white placeholder:text-slate-500 focus:border-amber-500/50 focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300">Link URL</label>
+                    <p className="mt-1 truncate rounded-xl border border-white/10 bg-white/5 p-3.5 text-sm text-slate-400">
+                      {affiliateLink}
+                    </p>
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      onClick={handleSaveLink}
+                      disabled={!saveLinkName.trim()}
+                      className="flex-1 rounded-xl bg-amber-500 py-3.5 font-semibold text-black hover:bg-amber-400 disabled:opacity-50"
+                    >
+                      Save to Money Links
+                    </button>
+                    <button
+                      onClick={() => setShowSavePopup(false)}
+                      className="rounded-xl border border-white/10 px-6 py-3.5 text-white hover:bg-white/5"
+                    >
+                      Skip
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Posts */}
       {showPosts && (
