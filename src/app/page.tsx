@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2, Map } from "lucide-react";
+import { Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2, Map, Play } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { LiveEarnings } from "@/components/ui/LiveEarnings";
@@ -23,6 +23,29 @@ export default function Home() {
       subtitle="Your AI-powered income system • Join 12,400+ members earning daily"
     >
       <OnboardingJourney open={showOnboarding} onClose={() => setShowOnboarding(false)} />
+
+      {/* Featured Video */}
+      <div className="glass-card rounded-3xl p-8">
+        <div className="mb-6 text-center">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20">
+            <Play className="text-amber-400" size={24} />
+          </div>
+          <h2 className="text-2xl font-bold text-white">See How It Works</h2>
+          <p className="mt-2 text-slate-400">Watch this quick video to see how members are earning daily with G-Labs 95</p>
+        </div>
+        <div className="overflow-hidden rounded-2xl border border-white/10">
+          <div style={{ padding: "56.25% 0 0 0", position: "relative" }}>
+            <iframe
+              src="https://player.vimeo.com/video/1172159655?badge=0&autopause=0&player_id=0&app_id=58479"
+              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+              allowFullScreen
+              title="G-Labs 95 — How It Works"
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Big Start Journey CTA */}
       <button

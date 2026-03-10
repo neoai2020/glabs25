@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { 
@@ -9,6 +9,35 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
+
+type GeneratedImage = {
+  id: string;
+  url: string;
+  title: string;
+  niche: string;
+  createdAt: string;
+};
+
+const IMAGES_STORAGE_PREFIX = "glabs_generated_images_";
+
+function loadGeneratedImages(userId: string | undefined): GeneratedImage[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const key = IMAGES_STORAGE_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return [];
+}
+
+function saveGeneratedImages(userId: string | undefined, images: GeneratedImage[]) {
+  if (typeof window === "undefined") return;
+  try {
+    const key = IMAGES_STORAGE_PREFIX + (userId ?? "anonymous");
+    localStorage.setItem(key, JSON.stringify(images));
+  } catch {}
+}
 
 // Proven money-making niches with pre-built prompts
 const niches = [
@@ -106,12 +135,18 @@ const niches = [
 ];
 
 export default function ImageForgePage() {
+  const { user } = useAuth();
   const [selectedNiche, setSelectedNiche] = useState<string | null>(null);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [aiStatus, setAiStatus] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [savedImages, setSavedImages] = useState<GeneratedImage[]>([]);
+
+  useEffect(() => {
+    setSavedImages(loadGeneratedImages(user?.id));
+  }, [user?.id]);
 
   const niche = niches.find(n => n.id === selectedNiche);
 
@@ -153,15 +188,20 @@ export default function ImageForgePage() {
       
       console.log("Response from API:", data);
       
-      if (data.success && data.image_url) {
-        setGeneratedImages([data.image_url]);
+      const imageUrl = data.image_url ?? data.generated_image;
+      if (imageUrl) {
+        setGeneratedImages([imageUrl]);
         setAiStatus("");
-      } else if (data.image_url) {
-        setGeneratedImages([data.image_url]);
-        setAiStatus("");
-      } else if (data.generated_image) {
-        setGeneratedImages([data.generated_image]);
-        setAiStatus("");
+        const newImage: GeneratedImage = {
+          id: Date.now().toString(),
+          url: imageUrl,
+          title: selectedPrompt ?? "AI Generated Image",
+          niche: niche?.name ?? "General",
+          createdAt: new Date().toISOString(),
+        };
+        const updated = [newImage, ...savedImages];
+        setSavedImages(updated);
+        saveGeneratedImages(user?.id, updated);
       } else {
         // API returned but no image - show error with retry option
         console.error("No image in response:", data);

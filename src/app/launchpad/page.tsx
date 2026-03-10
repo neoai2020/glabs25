@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
 import { 
@@ -9,12 +9,51 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
-// Sample generated images (in real app, these would come from state/API)
-const sampleImages = [
-  { id: "1", url: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800", title: "Home Decor" },
-  { id: "2", url: "https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=800", title: "Living Room" },
-];
+type GeneratedImage = {
+  id: string;
+  url: string;
+  title: string;
+  niche: string;
+  createdAt: string;
+};
+
+type SavedLink = {
+  id: string;
+  name: string;
+  url: string;
+  network: string;
+  isDefault: boolean;
+  earnings: string;
+};
+
+const IMAGES_STORAGE_PREFIX = "glabs_generated_images_";
+const LINKS_STORAGE_PREFIX = "glabs_money_links_";
+
+function loadGeneratedImages(userId: string | undefined): GeneratedImage[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const key = IMAGES_STORAGE_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return [];
+}
+
+function loadDefaultAffiliateLink(userId: string | undefined): string {
+  if (typeof window === "undefined") return "";
+  try {
+    const key = LINKS_STORAGE_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      const links: SavedLink[] = JSON.parse(stored);
+      const defaultLink = links.find((l) => l.isDefault) ?? links[0];
+      return defaultLink?.url ?? "";
+    }
+  } catch {}
+  return "";
+}
 
 // Publishing platforms with instructions
 const platforms = [
@@ -114,17 +153,24 @@ const platforms = [
 ];
 
 export default function LaunchpadPage() {
+  const { user } = useAuth();
   const [selectedPlatform, setSelectedPlatform] = useState(platforms[0]);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [userImages, setUserImages] = useState<GeneratedImage[]>([]);
+  const [affiliateLink, setAffiliateLink] = useState("");
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setUserImages(loadGeneratedImages(user?.id));
+    setAffiliateLink(loadDefaultAffiliateLink(user?.id));
+    setHydrated(true);
+  }, [user?.id]);
 
   const copyToClipboard = (text: string, field: string) => {
     navigator.clipboard.writeText(text);
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
   };
-
-  // Mock affiliate link - in real app would come from user's saved links
-  const affiliateLink = "https://amazon.com/shop/yourlink?tag=yourtag-20";
 
   return (
     <AppShell
@@ -244,33 +290,48 @@ export default function LaunchpadPage() {
         {/* Your affiliate link */}
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-white mb-4">Your Money Link (Copy & Paste):</h3>
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
-            <p className="text-emerald-400 font-mono text-sm break-all">{affiliateLink}</p>
-            <div className="mt-4 flex gap-3">
-              <button
-                onClick={() => copyToClipboard(affiliateLink, "link")}
-                className="flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-black hover:bg-emerald-400"
-              >
-                {copiedField === "link" ? (
-                  <>
-                    <CheckCircle2 size={16} />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} />
-                    Copy Link
-                  </>
-                )}
-              </button>
+          {affiliateLink ? (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
+              <p className="text-emerald-400 font-mono text-sm break-all">{affiliateLink}</p>
+              <div className="mt-4 flex gap-3">
+                <button
+                  onClick={() => copyToClipboard(affiliateLink, "link")}
+                  className="flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-black hover:bg-emerald-400"
+                >
+                  {copiedField === "link" ? (
+                    <>
+                      <CheckCircle2 size={16} />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={16} />
+                      Copy Link
+                    </>
+                  )}
+                </button>
+                <Link
+                  href="/monetization/link-vault"
+                  className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-white hover:bg-white/5"
+                >
+                  Change Link
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border-2 border-dashed border-amber-500/30 bg-amber-500/5 p-5 text-center">
+              <AlertCircle className="mx-auto text-amber-400" size={28} />
+              <p className="mt-2 font-medium text-white">No affiliate link saved yet</p>
+              <p className="mt-1 text-sm text-slate-400">Add your link to start earning from your images</p>
               <Link
                 href="/monetization/link-vault"
-                className="flex items-center gap-2 rounded-lg border border-white/10 px-4 py-2 text-sm text-white hover:bg-white/5"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-black hover:bg-amber-400"
               >
-                Change Link
+                Add Your Money Link
+                <ArrowRight size={16} />
               </Link>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Pro tips */}
@@ -300,7 +361,7 @@ export default function LaunchpadPage() {
           </Link>
         </div>
 
-        {sampleImages.length === 0 ? (
+        {!hydrated ? null : userImages.length === 0 ? (
           <div className="mt-6 rounded-2xl border-2 border-dashed border-white/10 p-8 text-center">
             <ImageIcon className="mx-auto text-slate-500" size={48} />
             <h3 className="mt-4 text-lg font-semibold text-white">No images yet</h3>
@@ -312,13 +373,14 @@ export default function LaunchpadPage() {
           </div>
         ) : (
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {sampleImages.map((img) => (
+            {userImages.map((img) => (
               <div key={img.id} className="overflow-hidden rounded-2xl border border-white/10">
                 <div className="relative aspect-square">
-                  <Image src={img.url} alt={img.title} fill className="object-cover" />
+                  <Image src={img.url} alt={img.title} fill className="object-cover" unoptimized />
                 </div>
                 <div className="bg-black/40 p-4">
-                  <p className="font-medium text-white">{img.title}</p>
+                  <p className="font-medium text-white truncate">{img.title}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">{img.niche}</p>
                   <a
                     href={img.url}
                     target="_blank"
