@@ -7,6 +7,7 @@ import {
   Wand2,
   DollarSign,
   Rocket,
+  GraduationCap,
   Map,
   HelpCircle,
   User,
@@ -31,6 +32,7 @@ const mainNav: NavItem[] = [
   { label: "AI Profit Machine", href: "/image-forge", icon: <Wand2 size={20} /> },
   { label: "Money Links", href: "/monetization/link-vault", icon: <DollarSign size={20} /> },
   { label: "Cash Out", href: "/launchpad", icon: <Rocket size={20} /> },
+  { label: "Training", href: "/training", icon: <GraduationCap size={20} /> },
 ];
 
 const premiumNav: NavItem[] = [
