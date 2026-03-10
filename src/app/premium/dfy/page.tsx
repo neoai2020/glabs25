@@ -10,6 +10,35 @@ import {
   Laptop, Flower2, PawPrint, Briefcase, CheckCircle2,
 } from "lucide-react";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
+
+type StoredImage = {
+  id: string;
+  url: string;
+  title: string;
+  niche: string;
+  createdAt: string;
+};
+
+const IMAGES_STORAGE_PREFIX = "glabs_generated_images_";
+
+function loadStoredImages(userId: string | undefined): StoredImage[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const key = IMAGES_STORAGE_PREFIX + (userId ?? "anonymous");
+    const stored = localStorage.getItem(key);
+    if (stored) return JSON.parse(stored);
+  } catch {}
+  return [];
+}
+
+function saveStoredImages(userId: string | undefined, images: StoredImage[]) {
+  if (typeof window === "undefined") return;
+  try {
+    const key = IMAGES_STORAGE_PREFIX + (userId ?? "anonymous");
+    localStorage.setItem(key, JSON.stringify(images));
+  } catch {}
+}
 
 type Prompt = {
   id: number;
@@ -167,11 +196,17 @@ const EARNINGS_FEED = [
 ];
 
 export default function DFYImagesPage() {
+  const { user } = useAuth();
   const [activeNiche, setActiveNiche] = useState<string>("all");
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [loadingIds, setLoadingIds] = useState<Set<number>>(new Set());
   const [generatedImages, setGeneratedImages] = useState<Record<number, string>>({});
   const [tickerIndex, setTickerIndex] = useState(0);
+  const [allSavedImages, setAllSavedImages] = useState<StoredImage[]>([]);
+
+  useEffect(() => {
+    setAllSavedImages(loadStoredImages(user?.id));
+  }, [user?.id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -204,6 +239,19 @@ export default function DFYImagesPage() {
 
       if (url) {
         setGeneratedImages((prev) => ({ ...prev, [promptItem.id]: url }));
+        const nicheInfo = NICHES.find((n) => n.id === promptItem.niche);
+        const newImage: StoredImage = {
+          id: `dfy-${promptItem.id}-${Date.now()}`,
+          url,
+          title: promptItem.prompt,
+          niche: nicheInfo?.name ?? "General",
+          createdAt: new Date().toISOString(),
+        };
+        setAllSavedImages((prev) => {
+          const updated = [newImage, ...prev];
+          saveStoredImages(user?.id, updated);
+          return updated;
+        });
       }
     } catch {
       // silently fail — user can retry
@@ -214,7 +262,7 @@ export default function DFYImagesPage() {
         return next;
       });
     }
-  }, []);
+  }, [user?.id]);
 
   return (
     <AppShell
