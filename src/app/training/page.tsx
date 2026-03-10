@@ -26,79 +26,61 @@ type Tutorial = {
 const TUTORIALS: Tutorial[] = [
   {
     id: "t1",
-    title: "Getting Started",
-    description:
-      "A complete walkthrough of G-Labs 95. Learn how the system works and how to set up everything in minutes.",
-    vimeoId: "1172159655",
-    duration: "3:42",
-    category: "Basics",
-  },
-  {
-    id: "t2",
     title: "AI Profit Machine",
     description:
       "How to create stunning AI images that get clicks and earn commissions. Pick a niche, generate, and publish.",
-    vimeoId: "1172159655",
-    duration: "4:15",
+    vimeoId: "1172180061",
+    duration: "0:53",
+    category: "Core Feature",
+  },
+  {
+    id: "t2",
+    title: "Cash Out",
+    description:
+      "Step-by-step guide to publishing your images on Pinterest, Instagram, TikTok, and Facebook for maximum earnings.",
+    vimeoId: "1172184880",
+    duration: "0:36",
     category: "Core Feature",
   },
   {
     id: "t3",
-    title: "Money Links Setup",
+    title: "Money Links",
     description:
-      "How to get your affiliate link from Amazon, Etsy, or DigiStore24 and save it to your account.",
-    vimeoId: "1172159655",
-    duration: "2:50",
+      "How to get your affiliate link from Amazon, Etsy, or DigiStore24 and save it to your account for easy reuse.",
+    vimeoId: "1172187408",
+    duration: "0:42",
     category: "Core Feature",
   },
   {
     id: "t4",
-    title: "Cash Out & Publish",
+    title: "Instant Income",
     description:
-      "Step-by-step guide to publishing your images on Pinterest, Instagram, TikTok, and Facebook for maximum earnings.",
-    vimeoId: "1172159655",
-    duration: "5:10",
-    category: "Core Feature",
+      "Copy-paste Facebook posts that earn. Learn how to pick a niche, add your link, and start posting today.",
+    vimeoId: "1172195557",
+    duration: "1:05",
+    category: "Premium",
   },
   {
     id: "t5",
-    title: "DFY Image Vault",
+    title: "Autopilot Traffic",
     description:
-      "How to use 100 pre-built prompts across 10 niches to generate money-making images with one click.",
-    vimeoId: "1172159655",
-    duration: "3:20",
+      "How to post your link to 60+ free traffic sources and build passive traffic that flows forever.",
+    vimeoId: "1172198089",
+    duration: "1:12",
     category: "Premium",
   },
   {
     id: "t6",
-    title: "Instant Income Posts",
+    title: "DFY Image Vault",
     description:
-      "Copy-paste Facebook posts that earn. Learn how to pick a niche, add your link, and start posting today.",
-    vimeoId: "1172159655",
-    duration: "4:05",
+      "How to use 100 pre-built prompts across 10 niches to generate money-making images with one click.",
+    vimeoId: "1172202709",
+    duration: "0:48",
     category: "Premium",
-  },
-  {
-    id: "t7",
-    title: "Autopilot Traffic",
-    description:
-      "How to post your link to 60+ free traffic sources and build passive traffic that flows forever.",
-    vimeoId: "1172159655",
-    duration: "6:30",
-    category: "Premium",
-  },
-  {
-    id: "t8",
-    title: "Scaling to $500/Day",
-    description:
-      "Advanced strategies used by top earners. Learn how to multiply your income with consistency and smart posting.",
-    vimeoId: "1172159655",
-    duration: "7:45",
-    category: "Advanced",
   },
 ];
 
-const CATEGORIES = ["All", "Basics", "Core Feature", "Premium", "Advanced"];
+const CATEGORIES = ["All", "Core Feature", "Premium"];
 
 const CATEGORY_TONE: Record<string, "default" | "success" | "warning" | "info" | "gold"> = {
   Basics: "info",
