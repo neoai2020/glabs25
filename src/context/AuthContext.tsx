@@ -17,7 +17,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Public routes that don't require authentication
-const publicRoutes = ["/login", "/signup", "/forgot-password"];
+const publicRoutes = ["/login", "/signup", "/forgot-password", "/reset-password"];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        if (event === "SIGNED_IN") {
+        if (event === "SIGNED_IN" && !window.location.pathname.startsWith("/reset-password")) {
           router.push("/");
         } else if (event === "SIGNED_OUT") {
           router.push("/login");
