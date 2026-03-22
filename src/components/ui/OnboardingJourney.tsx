@@ -6,7 +6,7 @@ import {
   TrendingUp, CheckCircle2, Trophy, Gift, Star, Users, Image as ImageIcon,
   Link2, PartyPopper, Crown,
 } from "lucide-react";
-import Link from "next/link";
+
 
 const socialProofNames = [
   "Sarah M.", "David R.", "Jennifer K.", "Michael L.", "Lisa S.",
@@ -367,15 +367,14 @@ export function OnboardingJourney({ open, onClose }: Props) {
                 </div>
               ))}
             </div>
-            <Link
-              href="/image-forge"
+            <button
               onClick={handleFinish}
               className="mt-8 inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-amber-500 to-emerald-500 px-10 py-5 text-xl font-extrabold text-black shadow-[0_0_40px_rgba(251,191,36,0.4)] transition-all hover:scale-105 hover:shadow-[0_0_60px_rgba(251,191,36,0.5)]"
             >
               <Sparkles size={24} />
-              Create My First Image
+              Go To My Dashboard
               <ArrowRight size={24} />
-            </Link>
+            </button>
             <p className="mt-4 text-sm text-slate-500">Your income journey starts now</p>
           </div>
         )}
