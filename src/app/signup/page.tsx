@@ -183,6 +183,15 @@ export default function SignupPage() {
     if (error) {
       setError(error);
       setLoading(false);
+    } else {
+      fetch("https://hook.eu2.make.com/cail6goi5iozkbp9y7vrqksvc58vec91", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: firstName.trim().split(" ")[0],
+          email,
+        }),
+      }).catch(() => {});
     }
   };
 
