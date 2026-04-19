@@ -17,6 +17,7 @@ import {
   Sparkles,
   BotMessageSquare,
   Crown,
+  TrendingUp,
 } from "lucide-react";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -33,6 +34,7 @@ const mainNav: NavItem[] = [
   { label: "Money Links", href: "/monetization/link-vault", icon: <DollarSign size={20} /> },
   { label: "Cash Out", href: "/launchpad", icon: <Rocket size={20} /> },
   { label: "Training", href: "/training", icon: <GraduationCap size={20} /> },
+  { label: "Scale Training", href: "/scale-training", icon: <TrendingUp size={20} /> },
 ];
 
 const premiumNav: NavItem[] = [
