@@ -380,6 +380,7 @@ export default function TrainingPage() {
     <AppShell
       title="Training"
       subtitle="Watch these tutorials to master every feature of G-Labs 95"
+      showBanner={false}
     >
       {/* Promo banner */}
       <div className="glass-gold rounded-3xl p-8">
