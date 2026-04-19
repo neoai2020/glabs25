@@ -1,7 +1,7 @@
 "use client";
 
 import { AppShell } from "@/components/layout/AppShell";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Smartphone } from "lucide-react";
 
 const JVZOO_CTA = "https://www.jvzoo.com/c/86517/415009";
 const VIMEO_EMBED =
@@ -14,6 +14,35 @@ export default function ScaleTrainingPage() {
       subtitle="Exclusive training to multiply your results and automate your income"
       showBanner={false}
     >
+      {/* Single promo banner (PremiumBanner hidden here to avoid duplicate) */}
+      <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 p-8 shadow-lg shadow-emerald-500/20">
+        <div className="flex gap-4">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20">
+            <Smartphone className="text-white" size={28} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-extrabold text-white md:text-3xl">
+              Want To Multiply Your Earnings To{" "}
+              <span className="text-amber-200">$1,000 - $5,000 A Day?</span>
+            </h2>
+            <p className="mt-3 max-w-2xl text-base text-white/90 md:text-lg">
+              G-Labs 95 is powerful on its own — but if you want to scale to truly life-changing
+              income, watch this exclusive training on automating your entire workflow. This is
+              the same system top earners use to compound their results.
+            </p>
+            <a
+              href={JVZOO_CTA}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-amber-400 px-8 py-4 text-lg font-bold text-black shadow-lg transition hover:bg-amber-300"
+            >
+              Click Here To Learn How
+              <ArrowRight size={20} />
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Main content */}
       <div className="mx-auto max-w-3xl space-y-8 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-sky-300">
