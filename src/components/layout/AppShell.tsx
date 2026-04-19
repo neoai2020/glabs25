@@ -23,8 +23,7 @@ export function AppShell({ title, subtitle, actions, children, className, showBa
       <WithdrawPopup />
       <Sidebar />
       <main className="flex-1 overflow-auto px-6 py-8 lg:px-12">
-        {/* Premium Banner - Shows on all pages */}
-        <PremiumBanner />
+        {showBanner ? <PremiumBanner /> : null}
         
         <header className="mb-8 flex items-end justify-between">
           <div>
