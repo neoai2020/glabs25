@@ -4,7 +4,8 @@ import { AppShell } from "@/components/layout/AppShell";
 import { Smartphone, ArrowRight, Sparkles } from "lucide-react";
 
 const JVZOO_CTA = "https://www.jvzoo.com/c/86517/415009";
-const VIDEO_SRC = "/videos/glabs-scale-training.mp4";
+const VIMEO_EMBED =
+  "https://player.vimeo.com/video/1184548251?badge=0&autopause=0&player_id=0&app_id=58479";
 
 export default function ScaleTrainingPage() {
   return (
@@ -64,15 +65,15 @@ export default function ScaleTrainingPage() {
         </p>
 
         <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl">
-          <video
-            className="aspect-video w-full bg-black object-contain"
-            controls
-            playsInline
-            preload="metadata"
-          >
-            <source src={VIDEO_SRC} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <div className="relative" style={{ padding: "56.25% 0 0 0" }}>
+            <iframe
+              src={VIMEO_EMBED}
+              className="absolute left-0 top-0 h-full w-full border-0"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              title="Glabs video"
+            />
+          </div>
         </div>
 
         <a
