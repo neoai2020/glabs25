@@ -35,7 +35,7 @@ const mainNav: NavItem[] = [
   { label: "Money Links", href: "/monetization/link-vault", icon: <DollarSign size={20} /> },
   { label: "Cash Out", href: "/launchpad", icon: <Rocket size={20} /> },
   { label: "Training", href: "/training", icon: <GraduationCap size={20} /> },
-  { label: "Scale Training", href: "/scale-training", icon: <TrendingUp size={20} /> },
+  { label: "New Way To Scale To $1,000 To $5,000", href: "/scale-training", icon: <TrendingUp size={20} /> },
 ];
 
 const premiumNav: NavItem[] = [
@@ -84,21 +84,21 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={clsx(
-                "flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-medium transition-all",
+                "flex items-start gap-3 rounded-xl px-4 py-3.5 text-sm font-medium leading-snug transition-all",
                 active
                   ? "bg-gradient-to-r from-amber-500/20 to-emerald-500/10 text-white shadow-lg shadow-amber-500/5"
                   : "text-slate-400 hover:bg-white/5 hover:text-white"
               )}
             >
               <span className={clsx(
-                "flex h-9 w-9 items-center justify-center rounded-xl transition-all",
+                "mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all",
                 active 
                   ? "bg-gradient-to-br from-amber-500 to-emerald-500 text-black shadow-md" 
                   : "bg-white/5 text-slate-500"
               )}>
                 {item.icon}
               </span>
-              {item.label}
+              <span className="min-w-0 flex-1">{item.label}</span>
             </Link>
           );
         })}
