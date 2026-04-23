@@ -18,6 +18,7 @@ import {
   BotMessageSquare,
   Crown,
   TrendingUp,
+  ExternalLink,
 } from "lucide-react";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -47,6 +48,13 @@ const secondaryNav: NavItem[] = [
   { label: "Start Tour", href: "/academy", icon: <Map size={20} /> },
   { label: "Help Center", href: "/docs-help", icon: <HelpCircle size={20} /> },
   { label: "My Account", href: "/account", icon: <User size={20} /> },
+];
+
+type ClaimCta = { title: string; href: string };
+const claimCtas: ClaimCta[] = [
+  { title: "Earn $400/Day With 1 Tap", href: "https://jvz8.com/c/86517/434727/" },
+  { title: "Get Paid To Copy & Paste", href: "https://jvz3.com/c/86517/433243/" },
+  { title: "Fast Cash Training", href: "https://www.jvzoo.com/c/86517/415009" },
 ];
 
 const supportLink = "#support";
@@ -95,6 +103,37 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* Quick claim CTAs (below main nav) */}
+      <div className="mt-4 space-y-2 px-4">
+        {claimCtas.map((cta) => (
+          <a
+            key={cta.href}
+            href={cta.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex overflow-hidden rounded-xl border border-amber-500/20 bg-gradient-to-b from-zinc-900/95 to-black shadow-[0_0_0_1px_rgba(245,158,11,0.08),inset_0_1px_0_rgba(255,255,255,0.04)] transition hover:border-amber-500/40 hover:shadow-amber-500/10"
+          >
+            <span
+              className="w-1 shrink-0 self-stretch rounded-l-xl bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.65)]"
+              aria-hidden
+            />
+            <span className="flex min-w-0 flex-1 items-center justify-between gap-2 py-2.5 pl-2.5 pr-2">
+              <span className="min-w-0 text-left">
+                <span className="block font-mono text-xs font-bold leading-snug text-white sm:text-[13px]">
+                  {cta.title}
+                </span>
+                <span className="mt-0.5 block font-mono text-[11px] text-white/75">
+                  Claim Now
+                </span>
+              </span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-amber-500/35 bg-amber-500/10 text-amber-400 transition group-hover:border-amber-500/50 group-hover:bg-amber-500/20">
+                <ExternalLink size={16} className="opacity-90" />
+              </span>
+            </span>
+          </a>
+        ))}
+      </div>
 
       {/* Premium Upgrades */}
       <div className="mt-6 px-4">
