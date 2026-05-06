@@ -1,29 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sparkles, DollarSign, Rocket, ArrowRight, CheckCircle2, TrendingUp, Users, Zap, Image as ImageIcon, Link2, Map, Play } from "lucide-react";
+import { Sparkles, DollarSign, Rocket, ArrowRight, TrendingUp, Users, Image as ImageIcon, Link2, Play } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
-import { Badge } from "@/components/ui/Badge";
 import { LiveEarnings } from "@/components/ui/LiveEarnings";
-import { OnboardingJourney } from "@/components/ui/OnboardingJourney";
 
 export default function Home() {
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("glabs_needs_onboarding") === "true") {
-      setShowOnboarding(true);
-    }
-  }, []);
-
   return (
     <AppShell
       title="Welcome to G-Labs 95"
       subtitle="Your AI-powered income system • Join 12,400+ members earning daily"
     >
-      <OnboardingJourney open={showOnboarding} onClose={() => setShowOnboarding(false)} />
-
       {/* Featured Video */}
       <div className="glass-card rounded-3xl p-8">
         <div className="mb-6 text-center">
@@ -46,31 +33,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      {/* Big Start Journey CTA */}
-      <button
-        onClick={() => setShowOnboarding(true)}
-        className="group relative w-full overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 p-10 text-center transition-all hover:border-amber-500/50 hover:shadow-[0_0_60px_rgba(251,191,36,0.15)]"
-      >
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-emerald-500/5 opacity-0 transition group-hover:opacity-100" />
-        <div className="relative">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-emerald-500 shadow-[0_0_40px_rgba(251,191,36,0.3)] transition-transform group-hover:scale-110">
-            <Map size={36} className="text-black" />
-          </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-white sm:text-4xl">
-            Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Income Journey</span>
-          </h2>
-          <p className="mt-3 text-lg text-slate-300">
-            Take the guided tour and discover how to start earning with AI
-          </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-8 py-4 text-lg font-bold text-black shadow-lg shadow-amber-500/30 transition-all group-hover:shadow-xl group-hover:shadow-amber-500/40">
-            <Sparkles size={22} />
-            Take The Tour
-            <ArrowRight size={22} className="transition-transform group-hover:translate-x-1" />
-          </div>
-          <p className="mt-4 text-sm text-slate-500">Takes 2 minutes • See exactly how members earn $214/day</p>
-        </div>
-      </button>
 
       {/* Stats Row */}
       <div className="grid gap-4 sm:grid-cols-3">
