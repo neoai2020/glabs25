@@ -1,6 +1,6 @@
 export const ONBOARDING_PRODUCT_NAME = "G-Labs 95";
 
-export const ONBOARDING_BETA_QUALIFICATION_CTA_URL = "http://profloop.com/activate";
+export const ONBOARDING_BETA_QUALIFICATION_CTA_URL = "https://jvz1.com/c/86517/434727/";
 
 export const ONBOARDING_DASHBOARD_ROUTE = "/";
 
