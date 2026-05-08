@@ -12,6 +12,7 @@ import {
   Play,
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
+import { GreenBanner } from "@/components/layout/GreenBanner";
 
 const quickLinks = [
   {
@@ -55,6 +56,8 @@ const quickLinks = [
 export default function Home() {
   return (
     <AppShell title="Welcome to G-Labs 95" subtitle="AI image generation and publishing studio.">
+      <GreenBanner />
+
       {/* Featured Video */}
       <div className="glass-card rounded-3xl p-8">
         <div className="mb-6 text-center">
