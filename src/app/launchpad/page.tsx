@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { Badge } from "@/components/ui/Badge";
-import { 
-  CheckCircle2, Copy, ExternalLink, DollarSign, TrendingUp, 
+import {
+  CheckCircle2, Copy, ExternalLink,
   Image as ImageIcon, ArrowRight, Sparkles, AlertCircle
 } from "lucide-react";
 import Image from "next/image";
@@ -25,11 +25,10 @@ type SavedLink = {
   url: string;
   network: string;
   isDefault: boolean;
-  earnings: string;
 };
 
 const IMAGES_STORAGE_PREFIX = "glabs_generated_images_";
-const LINKS_STORAGE_PREFIX = "glabs_money_links_";
+const LINKS_STORAGE_PREFIX = "glabs_affiliate_links_";
 
 function loadGeneratedImages(userId: string | undefined): GeneratedImage[] {
   if (typeof window === "undefined") return [];
@@ -55,13 +54,11 @@ function loadDefaultAffiliateLink(userId: string | undefined): string {
   return "";
 }
 
-// Publishing platforms with instructions
 const platforms = [
   {
     id: "pinterest",
     name: "Pinterest",
     icon: "📌",
-    earnings: "$50 - $200/day",
     difficulty: "Easy",
     recommended: true,
     steps: [
@@ -85,7 +82,6 @@ const platforms = [
     id: "instagram",
     name: "Instagram",
     icon: "📸",
-    earnings: "$30 - $150/day",
     difficulty: "Medium",
     recommended: false,
     steps: [
@@ -109,7 +105,6 @@ const platforms = [
     id: "tiktok",
     name: "TikTok",
     icon: "🎵",
-    earnings: "$20 - $100/day",
     difficulty: "Medium",
     recommended: false,
     steps: [
@@ -132,7 +127,6 @@ const platforms = [
     id: "facebook",
     name: "Facebook",
     icon: "📘",
-    earnings: "$10 - $50/day",
     difficulty: "Easy",
     recommended: false,
     steps: [
@@ -152,18 +146,30 @@ const platforms = [
   }
 ];
 
+type LaunchpadData = {
+  userImages: GeneratedImage[];
+  affiliateLink: string;
+  hydrated: boolean;
+};
+
 export default function LaunchpadPage() {
   const { user } = useAuth();
   const [selectedPlatform, setSelectedPlatform] = useState(platforms[0]);
   const [copiedField, setCopiedField] = useState<string | null>(null);
-  const [userImages, setUserImages] = useState<GeneratedImage[]>([]);
-  const [affiliateLink, setAffiliateLink] = useState("");
-  const [hydrated, setHydrated] = useState(false);
+  const [{ userImages, affiliateLink, hydrated }, setData] = useState<LaunchpadData>({
+    userImages: [],
+    affiliateLink: "",
+    hydrated: false,
+  });
 
   useEffect(() => {
-    setUserImages(loadGeneratedImages(user?.id));
-    setAffiliateLink(loadDefaultAffiliateLink(user?.id));
-    setHydrated(true);
+    queueMicrotask(() => {
+      setData({
+        userImages: loadGeneratedImages(user?.id),
+        affiliateLink: loadDefaultAffiliateLink(user?.id),
+        hydrated: true,
+      });
+    });
   }, [user?.id]);
 
   const copyToClipboard = (text: string, field: string) => {
@@ -174,47 +180,14 @@ export default function LaunchpadPage() {
 
   return (
     <AppShell
-      title="Cash Out"
-      subtitle="Follow these step-by-step instructions to publish your images and start earning"
+      title="Launchpad"
+      subtitle="Step-by-step instructions for publishing your images on each platform."
     >
-      {/* Earnings Overview */}
-      <div className="glass-gold rounded-3xl p-8">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div>
-            <Badge tone="gold">POTENTIAL EARNINGS</Badge>
-            <h2 className="mt-4 text-3xl font-bold text-white">
-              Turn Your Images Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">$50 - $500/day</span>
-            </h2>
-            <p className="mt-4 text-lg text-slate-300">
-              Your earnings depend on which platforms you use and how consistently you post. 
-              Pinterest is the easiest to start with and has the highest earning potential.
-            </p>
-            <div className="mt-6 flex items-center gap-4">
-              <div className="flex items-center gap-2 text-emerald-400">
-                <CheckCircle2 size={20} />
-                <span>No followers needed</span>
-              </div>
-              <div className="flex items-center gap-2 text-emerald-400">
-                <CheckCircle2 size={20} />
-                <span>Works while you sleep</span>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-6xl font-bold text-white">$214</p>
-              <p className="text-slate-400">Average daily earnings</p>
-              <p className="mt-2 text-emerald-400 font-medium">from Pinterest alone</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Platform Selection */}
       <div className="glass-card rounded-3xl p-8">
         <h2 className="text-xl font-bold text-white">Choose Where to Publish</h2>
-        <p className="text-slate-400">Select a platform to see step-by-step instructions</p>
-        
+        <p className="text-slate-400">Select a platform to see step-by-step instructions.</p>
+
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {platforms.map((platform) => (
             <button
@@ -231,7 +204,6 @@ export default function LaunchpadPage() {
               )}
               <div className="mt-2 text-4xl">{platform.icon}</div>
               <h3 className="mt-3 font-semibold text-white">{platform.name}</h3>
-              <p className="mt-1 text-emerald-400 font-medium">{platform.earnings}</p>
               <p className="mt-1 text-sm text-slate-400">Difficulty: {platform.difficulty}</p>
             </button>
           ))}
@@ -244,7 +216,7 @@ export default function LaunchpadPage() {
           <span className="text-4xl">{selectedPlatform.icon}</span>
           <div>
             <h2 className="text-2xl font-bold text-white">How to Post on {selectedPlatform.name}</h2>
-            <p className="text-emerald-400 font-medium">Potential: {selectedPlatform.earnings}</p>
+            <p className="text-slate-400">Difficulty: {selectedPlatform.difficulty}</p>
           </div>
         </div>
 
@@ -287,9 +259,9 @@ export default function LaunchpadPage() {
           </div>
         </div>
 
-        {/* Your affiliate link */}
+        {/* Affiliate link */}
         <div className="mt-8">
-          <h3 className="text-lg font-semibold text-white mb-4">Your Money Link (Copy & Paste):</h3>
+          <h3 className="text-lg font-semibold text-white mb-4">Your Affiliate Link (Copy & Paste):</h3>
           {affiliateLink ? (
             <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-5">
               <p className="text-emerald-400 font-mono text-sm break-all">{affiliateLink}</p>
@@ -322,12 +294,12 @@ export default function LaunchpadPage() {
             <div className="rounded-xl border-2 border-dashed border-amber-500/30 bg-amber-500/5 p-5 text-center">
               <AlertCircle className="mx-auto text-amber-400" size={28} />
               <p className="mt-2 font-medium text-white">No affiliate link saved yet</p>
-              <p className="mt-1 text-sm text-slate-400">Add your link to start earning from your images</p>
+              <p className="mt-1 text-sm text-slate-400">Save a link to attach it to your posts.</p>
               <Link
                 href="/monetization/link-vault"
                 className="mt-4 inline-flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-black hover:bg-amber-400"
               >
-                Add Your Money Link
+                Add a Link
                 <ArrowRight size={16} />
               </Link>
             </div>
@@ -336,7 +308,7 @@ export default function LaunchpadPage() {
 
         {/* Pro tips */}
         <div className="mt-8 rounded-xl border border-amber-500/20 bg-amber-500/5 p-6">
-          <h3 className="text-lg font-semibold text-white mb-3">💡 Pro Tips for {selectedPlatform.name}:</h3>
+          <h3 className="text-lg font-semibold text-white mb-3">Tips for {selectedPlatform.name}:</h3>
           <ul className="space-y-2">
             {selectedPlatform.tips.map((tip, idx) => (
               <li key={idx} className="flex items-start gap-2 text-slate-300">
@@ -353,7 +325,7 @@ export default function LaunchpadPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-white">Your Images Ready to Post</h2>
-            <p className="text-slate-400">Download these and follow the instructions above</p>
+            <p className="text-slate-400">Download these and follow the instructions above.</p>
           </div>
           <Link href="/image-forge" className="flex items-center gap-2 text-amber-400 hover:text-amber-300">
             <Sparkles size={18} />
@@ -365,7 +337,7 @@ export default function LaunchpadPage() {
           <div className="mt-6 rounded-2xl border-2 border-dashed border-white/10 p-8 text-center">
             <ImageIcon className="mx-auto text-slate-500" size={48} />
             <h3 className="mt-4 text-lg font-semibold text-white">No images yet</h3>
-            <p className="mt-2 text-slate-400">Create your first money-making images</p>
+            <p className="mt-2 text-slate-400">Generate your first images to get started.</p>
             <Link href="/image-forge" className="btn-premium mt-4 inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold text-black">
               <Sparkles size={18} />
               Create Images
@@ -396,67 +368,6 @@ export default function LaunchpadPage() {
             ))}
           </div>
         )}
-      </div>
-
-      {/* Earnings Estimates by Platform */}
-      <div className="glass-card rounded-3xl p-8">
-        <h2 className="text-xl font-bold text-white">Earnings Estimates by Platform</h2>
-        <p className="text-slate-400">Based on posting 5-10 images per day</p>
-        
-        <div className="mt-6 overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="py-3 text-left text-slate-400 font-medium">Platform</th>
-                <th className="py-3 text-left text-slate-400 font-medium">Daily Potential</th>
-                <th className="py-3 text-left text-slate-400 font-medium">Monthly Potential</th>
-                <th className="py-3 text-left text-slate-400 font-medium">Difficulty</th>
-              </tr>
-            </thead>
-            <tbody>
-              {platforms.map((p) => (
-                <tr key={p.id} className="border-b border-white/5">
-                  <td className="py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{p.icon}</span>
-                      <span className="font-medium text-white">{p.name}</span>
-                      {p.recommended && <Badge tone="success" size="sm">Best</Badge>}
-                    </div>
-                  </td>
-                  <td className="py-4 text-emerald-400 font-semibold">{p.earnings}</td>
-                  <td className="py-4 text-white">
-                    ${parseInt(p.earnings.split(' - ')[0].replace('$', '')) * 30} - ${parseInt(p.earnings.split(' - ')[1].replace('/day', '').replace('$', '')) * 30}
-                  </td>
-                  <td className="py-4 text-slate-400">{p.difficulty}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Final CTA */}
-      <div className="glass-money rounded-3xl p-8 text-center">
-        <h2 className="text-2xl font-bold text-white">Ready to Start Earning?</h2>
-        <p className="mt-2 text-lg text-slate-300">Follow the steps above and post your first image today!</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-4">
-          <a
-            href="https://pinterest.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-premium flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-black"
-          >
-            📌 Open Pinterest
-            <ExternalLink size={20} />
-          </a>
-          <Link
-            href="/image-forge"
-            className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-8 py-4 text-lg font-semibold text-white hover:bg-white/10"
-          >
-            <Sparkles size={20} />
-            Create More Images
-          </Link>
-        </div>
       </div>
     </AppShell>
   );

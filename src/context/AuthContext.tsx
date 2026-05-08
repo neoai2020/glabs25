@@ -1,14 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter, usePathname } from "next/navigation";
-import {
-  ONBOARDING_DASHBOARD_ROUTE,
-  ONBOARDING_META_KEY,
-} from "@/config/onboarding-content";
-import { resolveOnboardingGate } from "@/lib/onboarding-gate";
 
 type AuthContextType = {
   user: User | null;
@@ -22,7 +17,6 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const publicRoutes = ["/login", "/signup", "/forgot-password", "/reset-password"];
-const ONBOARDING_ROUTE = "/onboarding";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -30,7 +24,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
-  const gateInFlightRef = useRef<string | null>(null);
 
   useEffect(() => {
     const getSession = async () => {
@@ -48,7 +41,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
-        if (event === "SIGNED_OUT") {
+        if (event === "SIGNED_IN" && !window.location.pathname.startsWith("/reset-password")) {
+          router.push("/");
+        } else if (event === "SIGNED_OUT") {
           router.push("/login");
         }
       }
@@ -61,52 +56,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (loading) return;
 
     const isPublicRoute = publicRoutes.includes(pathname);
-    const isOnboardingRoute = pathname === ONBOARDING_ROUTE;
 
-    if (!user) {
-      if (!isPublicRoute) {
-        router.push("/login");
-      }
-      return;
+    if (!user && !isPublicRoute) {
+      router.push("/login");
+    } else if (user && isPublicRoute) {
+      router.push("/");
     }
-
-    if (isPublicRoute) {
-      router.push(ONBOARDING_DASHBOARD_ROUTE);
-      return;
-    }
-
-    const gateKey = `${user.id}:${pathname}`;
-    if (gateInFlightRef.current === gateKey) return;
-    gateInFlightRef.current = gateKey;
-
-    let cancelled = false;
-    (async () => {
-      const gate = await resolveOnboardingGate(
-        supabase,
-        user.id,
-        user.user_metadata
-      );
-      if (cancelled) return;
-
-      if (!gate.isComplete && !isOnboardingRoute) {
-        router.replace(ONBOARDING_ROUTE);
-      } else if (gate.isComplete && isOnboardingRoute) {
-        router.replace(ONBOARDING_DASHBOARD_ROUTE);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
   }, [user, loading, pathname, router]);
 
   const signUp = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        data: { [ONBOARDING_META_KEY]: false },
-      },
     });
 
     if (error) {
@@ -116,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (data.session) {
       setSession(data.session);
       setUser(data.user);
-      router.push(ONBOARDING_ROUTE);
+      router.push("/");
     }
 
     return { error: null };

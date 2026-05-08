@@ -24,7 +24,6 @@ export type AffiliateLink = {
   isDefault?: boolean;
   lastUsed: string;
   notes?: string;
-  earnings?: string;
 };
 
 export type PublishItem = {
@@ -38,31 +37,8 @@ export type PublishItem = {
   error?: string;
 };
 
-export type SocialEvent = {
-  id: string;
-  headline: string;
-  detail: string;
-  ago: string;
-  pill?: string;
-};
-
 export type ChecklistItem = {
   label: string;
   done: boolean;
   href?: string;
-};
-
-export type Testimonial = {
-  name: string;
-  avatar: string;
-  earnings: string;
-  period: string;
-  quote: string;
-  niche: string;
-};
-
-export type NicheData = {
-  name: string;
-  avgEarnings: string;
-  growth: string;
 };

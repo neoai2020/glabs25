@@ -38,13 +38,13 @@ export default function LoginPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">G-Labs 95</h1>
-              <p className="text-xs text-emerald-400 font-medium">AI Income System</p>
+              <p className="text-xs text-slate-500 font-medium">AI Creator Studio</p>
             </div>
           </div>
 
           {/* Header */}
           <h2 className="text-3xl font-bold text-white">Welcome back</h2>
-          <p className="mt-2 text-slate-400">Sign in to continue making money</p>
+          <p className="mt-2 text-slate-400">Sign in to your account</p>
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -126,45 +126,15 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Right Side - Promo */}
+      {/* Right Side - Brand panel */}
       <div className="hidden lg:flex lg:flex-1 lg:flex-col lg:justify-center bg-gradient-to-br from-amber-900/20 to-emerald-900/20 p-12">
         <div className="max-w-lg">
-          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-3 py-1 text-sm font-medium text-emerald-400">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-            </span>
-            12,483 members earning daily
-          </div>
-
-          <h2 className="mt-6 text-4xl font-bold text-white">
-            Turn AI Images Into <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Passive Income</span>
+          <h2 className="text-4xl font-bold text-white">
+            AI image creation, made simple.
           </h2>
-
           <p className="mt-4 text-lg text-slate-300">
-            Create stunning images with AI, post them on Pinterest, and earn money while you sleep. No design skills required.
+            Generate images with AI, organize them in your library, and publish to Pinterest, Instagram, and stock platforms — all from one place.
           </p>
-
-          <div className="mt-8 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                <span className="text-xl">💰</span>
-              </div>
-              <div>
-                <p className="font-medium text-white">$847,230</p>
-                <p className="text-sm text-slate-400">Earned by members this month</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                <span className="text-xl">📈</span>
-              </div>
-              <div>
-                <p className="font-medium text-white">$214.36/day average</p>
-                <p className="text-sm text-slate-400">Member earnings</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

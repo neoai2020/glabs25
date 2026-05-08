@@ -319,8 +319,8 @@ export default function ResetPasswordPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">G-Labs 95</h1>
-              <p className="text-xs font-medium text-emerald-400">
-                AI Income System
+              <p className="text-xs font-medium text-slate-500">
+                AI Creator Studio
               </p>
             </div>
           </div>
@@ -351,8 +351,7 @@ export default function ResetPasswordPage() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-slate-300">
-            Pick a strong password and you&apos;ll be back to earning in
-            seconds.
+            Pick a strong password and you&apos;ll be back in your account in seconds.
           </p>
           <div className="mt-8 space-y-4">
             <div className="flex items-center gap-3">
@@ -376,19 +375,6 @@ export default function ResetPasswordPage() {
                 </p>
                 <p className="text-sm text-slate-400">
                   Keep your account safe
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                <span className="text-xl">💰</span>
-              </div>
-              <div>
-                <p className="font-medium text-white">
-                  Your earnings are waiting
-                </p>
-                <p className="text-sm text-slate-400">
-                  Get back to making money with AI
                 </p>
               </div>
             </div>

@@ -16,9 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "G-Labs 95 | AI Income System",
-  description:
-    "Generate AI images, publish to Pinterest, and earn passive income.",
+  title: "G-Labs 95",
+  description: "AI image generation and publishing studio.",
 };
 
 export default function RootLayout({

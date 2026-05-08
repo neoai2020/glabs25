@@ -1,6 +1,6 @@
 # G-Labs 95
 
-Dark, purple-neon, glassy creator OS to turn AI-generated images into income (Pinterest, Instagram assist, Stock). Built to stay “always-guided” for older/low-tech users, with dopamine-positive surfaces and clear guardrails.
+Dark, glassy AI image creation and publishing studio. Generate images with AI, organize them in a library, attach affiliate links, and publish to Pinterest, Instagram (assisted), and stock platforms.
 
 ## Stack
 - Next.js 16 (App Router, TypeScript)
@@ -10,16 +10,15 @@ Dark, purple-neon, glassy creator OS to turn AI-generated images into income (Pi
 - Styling: glassmorphism + custom globals, Geist font
 
 ## App structure (routes)
-- `/` Command Center dashboard (banner, checklist, quick actions, stats, social rail)
-- `/image-forge` Guided AI image generation flow (preset styles, batch ≤8, affiliate-ready toggle, skeleton states)
-- `/monetization/library` Asset library with filters, link status, caption assist/export CTAs
-- `/monetization/link-vault` Affiliate link table CRUD surface (default flag, copy)
-- `/launchpad` Publishing/scheduling for Pinterest, Instagram (assisted), Stock, manual export; batch cap 5; review + warnings; status widget
-- `/scheduler` Queue + history with retry/cancel and IG “prepared” status
-- `/social-proof` Live feed, milestones, earnings-range cards with disclaimers
-- `/academy` Short trainings + embedded CTA
-- `/docs-help` Mini-docs, anti-spam do/don’t, inline guide CTA
-- `/account` Profile, API keys, plan block, logout CTA
+- `/` Dashboard with quick links to every feature
+- `/image-forge` Guided AI image generation (presets, niches, prompts)
+- `/monetization/library` Image library with filters and link status
+- `/monetization/link-vault` Affiliate link manager (CRUD + default flag + copy)
+- `/launchpad` Publishing instructions for Pinterest, Instagram, TikTok, Facebook
+- `/scheduler` Publish queue and history with retry/cancel
+- `/training` Tutorial videos and FAQs for every feature
+- `/docs-help` Help center with FAQs, tips, and support contacts
+- `/account` Profile, membership, and sign-out
 
 ## Data + mocks
 - Types in `src/lib/types.ts`
@@ -48,8 +47,8 @@ Set before running/building:
 - Remote images allowlist configured for Unsplash placeholders (`next.config.ts`)
 
 ## Next steps (backlog)
-- Wire Supabase tables: users, profiles, assets, link_vault, publishes, analytics_events, social_proof, docs_tooltips, settings (RLS on user_id; service role for jobs)
+- Wire Supabase tables: users, profiles, assets, link_vault, publishes (RLS on user_id; service role for jobs)
 - Replace mocks with Supabase queries and mutations
-- Integrate RapidAPI (DALL·E/image gen, background remover, ChatGPT caption assist) with bounded CFG/steps
+- Integrate RapidAPI (image generation, background remover, caption assist) with bounded CFG/steps
 - Implement Pinterest publish + IG assisted packaging + Stock adapter; add retries/backoff
 - Add validation + guardrails (URL validation, banned terms, hashtag length, batch caps)
