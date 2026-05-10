@@ -14,6 +14,10 @@ import {
   User,
   Zap,
   MessageCircle,
+  Sparkles,
+  Layers,
+  Rocket,
+  TrendingUp,
 } from "lucide-react";
 import clsx from "clsx";
 import type { ReactNode } from "react";
@@ -32,6 +36,13 @@ const mainNav: NavItem[] = [
   { label: "Launchpad", href: "/launchpad", icon: <Send size={20} /> },
   { label: "Scheduler", href: "/scheduler", icon: <CalendarClock size={20} /> },
   { label: "Training", href: "/training", icon: <GraduationCap size={20} /> },
+];
+
+const upgradesNav: NavItem[] = [
+  { label: "Instant Income", href: "/premium/instant-income", icon: <Sparkles size={20} /> },
+  { label: "DFY Image Vault", href: "/premium/dfy", icon: <Layers size={20} /> },
+  { label: "Autopilot Traffic", href: "/premium/autopilot", icon: <Rocket size={20} /> },
+  { label: "Scale Training", href: "/scale-training", icon: <TrendingUp size={20} /> },
 ];
 
 const secondaryNav: NavItem[] = [
@@ -76,6 +87,41 @@ export function Sidebar() {
                 "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all",
                 active
                   ? "bg-white/15 text-white"
+                  : "bg-white/5 text-slate-500"
+              )}>
+                {item.icon}
+              </span>
+              <span className="min-w-0 flex-1">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Divider */}
+      <div className="mx-4 mt-6 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+      {/* Upgrades Section */}
+      <div className="mt-4 px-6">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Upgrades</p>
+      </div>
+      <nav className="mt-2 space-y-1 px-4">
+        {upgradesNav.map((item) => {
+          const active = pathname === item.href || pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={clsx(
+                "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all",
+                active
+                  ? "bg-amber-500/15 text-amber-300"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+              )}
+            >
+              <span className={clsx(
+                "flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all",
+                active
+                  ? "bg-amber-500/25 text-amber-300"
                   : "bg-white/5 text-slate-500"
               )}>
                 {item.icon}
