@@ -32,9 +32,7 @@ export default function AccountPage() {
               <Badge tone="gold" size="md">G-LABS 95 MEMBER</Badge>
             </div>
             <p className="mt-1 text-slate-400">{user?.email}</p>
-            <p className="mt-1 text-slate-500">
-              {user?.created_at ? `Member since ${new Date(user.created_at).toLocaleDateString()}` : "Member"}
-            </p>
+            <p className="mt-1 text-slate-500">Member since {new Date(user?.created_at || Date.now()).toLocaleDateString()}</p>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { Zap, Mail, Lock, ArrowRight, Loader2, Eye, EyeOff, User, Phone, Shield, Sparkles, Image as ImageIcon, Send } from "lucide-react";
+import { Zap, Mail, Lock, ArrowRight, Loader2, Eye, EyeOff, User, Phone, CheckCircle2, DollarSign, TrendingUp, Clock, Shield } from "lucide-react";
 
 // Country codes for phone validation
 const countryCodes = [
@@ -197,46 +197,54 @@ export default function SignupPage() {
 
   return (
     <div className="flex min-h-screen bg-[#0a0a0f]">
-      {/* Left Side - Brand panel */}
+      {/* Left Side - Benefits */}
       <div className="hidden lg:flex lg:w-[45%] lg:flex-col lg:justify-center bg-gradient-to-br from-emerald-900/30 via-emerald-900/20 to-amber-900/20 p-12 xl:p-16">
         <div className="max-w-lg">
-          <h2 className="text-4xl font-bold text-white xl:text-5xl">
-            AI image creation, <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">made simple</span>.
+          <div className="inline-flex items-center gap-2 rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-400">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            Join 12,483+ members earning daily
+          </div>
+
+          <h2 className="mt-8 text-4xl font-bold text-white xl:text-5xl">
+            Start Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-emerald-400">Wealth Journey</span> Today
           </h2>
 
           <p className="mt-6 text-xl text-slate-300">
-            Generate AI images, organize them in your library, and publish to Pinterest, Instagram, and stock platforms — all from one place.
+            Unlock the proven system that&apos;s helping everyday people build life-changing income online.
           </p>
 
-          {/* Feature highlights */}
+          {/* Benefits */}
           <div className="mt-10 space-y-5">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20">
-                <Sparkles className="text-emerald-400" size={24} />
+                <DollarSign className="text-emerald-400" size={24} />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">AI Image Forge</p>
-                <p className="text-slate-400">Generate images from prompts and presets with one click.</p>
+                <p className="font-semibold text-white text-lg">Proven Income System</p>
+                <p className="text-slate-400">Follow our step-by-step blueprint used by thousands to earn online</p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/20">
-                <ImageIcon className="text-amber-400" size={24} />
+                <TrendingUp className="text-amber-400" size={24} />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">Organized Library</p>
-                <p className="text-slate-400">Tag, search, and reuse every image you create.</p>
+                <p className="font-semibold text-white text-lg">$214.36/Day Average Earnings</p>
+                <p className="text-slate-400">Our members earn an average of $214.36 per day in passive income</p>
               </div>
             </div>
 
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20">
-                <Send className="text-emerald-400" size={24} />
+                <Clock className="text-emerald-400" size={24} />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">Publish Anywhere</p>
-                <p className="text-slate-400">Post to Pinterest, Instagram, and stock with built-in templates.</p>
+                <p className="font-semibold text-white text-lg">Works While You Sleep</p>
+                <p className="text-slate-400">Set it up once and earn 24/7 passive income on autopilot</p>
               </div>
             </div>
 
@@ -245,10 +253,17 @@ export default function SignupPage() {
                 <Shield className="text-amber-400" size={24} />
               </div>
               <div>
-                <p className="font-semibold text-white text-lg">Support & Training</p>
-                <p className="text-slate-400">Short walkthroughs and a help center on every feature.</p>
+                <p className="font-semibold text-white text-lg">Full Support & Training</p>
+                <p className="text-slate-400">Our success team guides you every step of the way</p>
               </div>
             </div>
+          </div>
+
+          {/* Social Proof */}
+          <div className="mt-10 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-6">
+            <p className="text-sm text-slate-400 uppercase tracking-wide">Member Results This Month</p>
+            <p className="mt-2 text-4xl font-bold text-white">$847,230</p>
+            <p className="text-emerald-400 font-medium">Total earnings across all members</p>
           </div>
         </div>
       </div>
@@ -355,7 +370,7 @@ export default function SignupPage() {
               </div>
               <p className="mt-2 text-xs text-slate-500 flex items-start gap-1.5">
                 <Shield size={12} className="mt-0.5 shrink-0 text-emerald-500" />
-                Our support team will reach out if there are any issues with your account.
+                Our success team will reach out if there are any issues with your account or to help you maximize your earnings.
               </p>
             </div>
 

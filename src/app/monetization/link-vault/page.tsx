@@ -16,9 +16,10 @@ type SavedLink = {
   url: string;
   network: string;
   isDefault: boolean;
+  earnings: string;
 };
 
-const STORAGE_KEY_PREFIX = "glabs_affiliate_links_";
+const STORAGE_KEY_PREFIX = "glabs_money_links_";
 
 const defaultSavedLinks: SavedLink[] = [
   {
@@ -27,7 +28,8 @@ const defaultSavedLinks: SavedLink[] = [
     url: "https://amazon.com/shop/yourname?tag=yourtag-20",
     network: "Amazon Associates",
     isDefault: true,
-  },
+    earnings: "$847"
+  }
 ];
 
 function loadLinks(userId: string | undefined): SavedLink[] {
@@ -36,6 +38,23 @@ function loadLinks(userId: string | undefined): SavedLink[] {
     const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
     const stored = localStorage.getItem(key);
     if (stored) return JSON.parse(stored);
+    // One-time forward-migration from the renamed key used during the
+    // cleanup window so saved links aren't lost when restoring this code.
+    const renamedKey = "glabs_affiliate_links_" + (userId ?? "anonymous");
+    const renamed = localStorage.getItem(renamedKey);
+    if (renamed) {
+      const parsed = JSON.parse(renamed) as Array<Partial<SavedLink>>;
+      const normalized: SavedLink[] = parsed.map((l) => ({
+        id: String(l.id ?? Date.now()),
+        name: String(l.name ?? ""),
+        url: String(l.url ?? ""),
+        network: String(l.network ?? "Affiliate"),
+        isDefault: Boolean(l.isDefault),
+        earnings: String(l.earnings ?? "$0"),
+      }));
+      localStorage.setItem(key, JSON.stringify(normalized));
+      return normalized;
+    }
   } catch { /* ignore corrupt data */ }
   return defaultSavedLinks;
 }
@@ -48,34 +67,23 @@ function saveLinks(userId: string | undefined, links: SavedLink[]) {
   } catch { /* storage full / unavailable */ }
 }
 
-type LinkVaultData = {
-  links: SavedLink[];
-  hydrated: boolean;
-};
-
 export default function LinkVaultPage() {
   const { user } = useAuth();
-  const [{ links, hydrated }, setData] = useState<LinkVaultData>({
-    links: [],
-    hydrated: false,
-  });
+  const [links, setLinks] = useState<SavedLink[]>([]);
+  const [hydrated, setHydrated] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newLinkName, setNewLinkName] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      setData({
-        links: loadLinks(user?.id),
-        hydrated: true,
-      });
-    });
+    setLinks(loadLinks(user?.id));
+    setHydrated(true);
   }, [user?.id]);
 
   const persistLinks = useCallback(
     (next: SavedLink[]) => {
-      setData((prev) => ({ ...prev, links: next }));
+      setLinks(next);
       saveLinks(user?.id, next);
     },
     [user?.id]
@@ -90,10 +98,11 @@ export default function LinkVaultPage() {
       id: Date.now().toString(),
       name: newLinkName,
       url: newLinkUrl,
-      network: newLinkUrl.includes("amazon") ? "Amazon" :
-               newLinkUrl.includes("etsy") ? "Etsy" :
+      network: newLinkUrl.includes("amazon") ? "Amazon" : 
+               newLinkUrl.includes("etsy") ? "Etsy" : 
                newLinkUrl.includes("walmart") ? "Walmart" : "Affiliate",
       isDefault: links.length === 0,
+      earnings: "$0"
     };
     
     persistLinks([...links, newLink]);
@@ -118,60 +127,85 @@ export default function LinkVaultPage() {
 
   return (
     <AppShell
-      title="Affiliate Links"
-      subtitle="Manage the destination links you attach to your images."
+      title="Money Links"
+      subtitle="Add your affiliate link to earn money from your images"
     >
-      {/* What is an affiliate link */}
-      <div className="glass-card rounded-3xl p-8">
+      {/* What is this page - Clear explanation */}
+      <div className="glass-gold rounded-3xl p-8">
         <div className="flex items-start gap-4">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-amber-500/20">
             <HelpCircle className="text-amber-400" size={28} />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white">What is an affiliate link?</h2>
-            <p className="mt-3 text-slate-300">
-              An affiliate link is a destination URL provided by an affiliate program that identifies you as the referrer. Save your links here so you can attach them to images you publish.
+            <h2 className="text-2xl font-bold text-white">What is an Affiliate Link?</h2>
+            <p className="mt-3 text-lg text-slate-300">
+              An affiliate link is a special URL that tracks when someone buys something through your recommendation. 
+              When you share an image on Pinterest with your affiliate link, and someone clicks it and makes a purchase, 
+              <span className="font-semibold text-emerald-400"> you earn a commission (usually 3-10% of the sale)</span>.
             </p>
+          </div>
+        </div>
+
+        {/* How it works steps */}
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-2xl bg-black/20 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-lg font-bold text-black">1</div>
+            <h3 className="mt-3 font-semibold text-white">You share an image</h3>
+            <p className="mt-1 text-sm text-slate-400">Post your AI image to Pinterest with your affiliate link attached</p>
+          </div>
+          <div className="rounded-2xl bg-black/20 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500 text-lg font-bold text-black">2</div>
+            <h3 className="mt-3 font-semibold text-white">Someone clicks & buys</h3>
+            <p className="mt-1 text-sm text-slate-400">They see the product on Amazon/Etsy and decide to purchase</p>
+          </div>
+          <div className="rounded-2xl bg-black/20 p-5">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500 text-lg font-bold text-black">3</div>
+            <h3 className="mt-3 font-semibold text-white">You get paid!</h3>
+            <p className="mt-1 text-sm text-slate-400">The company pays you a percentage of every sale automatically</p>
           </div>
         </div>
       </div>
 
       {/* Where to get an affiliate link */}
       <div className="glass-card rounded-3xl p-8">
-        <h2 className="text-xl font-bold text-white">Where to get an affiliate link</h2>
-        <p className="mt-2 text-slate-400">A few common programs you can apply to:</p>
-
+        <h2 className="text-xl font-bold text-white">Where to Get an Affiliate Link?</h2>
+        <p className="mt-2 text-slate-400">Sign up for free with any of these programs:</p>
+        
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <a href="https://affiliate-program.amazon.com/" target="_blank" rel="noopener noreferrer"
+          <a href="https://affiliate-program.amazon.com/" target="_blank" rel="noopener noreferrer" 
              className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="text-2xl font-bold text-white">Amazon</div>
             <p className="mt-1 text-sm text-slate-400">Amazon Associates</p>
+            <p className="mt-2 text-emerald-400 font-medium">1-10% commission</p>
             <span className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400">
-              Apply <ExternalLink size={12} />
+              Sign up free <ExternalLink size={12} />
             </span>
           </a>
           <a href="https://www.etsy.com/affiliates" target="_blank" rel="noopener noreferrer"
              className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="text-2xl font-bold text-white">Etsy</div>
             <p className="mt-1 text-sm text-slate-400">Etsy Affiliate Program</p>
+            <p className="mt-2 text-emerald-400 font-medium">4-8% commission</p>
             <span className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400">
-              Apply <ExternalLink size={12} />
+              Sign up free <ExternalLink size={12} />
             </span>
           </a>
           <a href="https://affiliates.walmart.com/" target="_blank" rel="noopener noreferrer"
              className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="text-2xl font-bold text-white">Walmart</div>
             <p className="mt-1 text-sm text-slate-400">Walmart Affiliates</p>
+            <p className="mt-2 text-emerald-400 font-medium">1-4% commission</p>
             <span className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400">
-              Apply <ExternalLink size={12} />
+              Sign up free <ExternalLink size={12} />
             </span>
           </a>
           <a href="https://www.shareasale.com/" target="_blank" rel="noopener noreferrer"
              className="rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:border-amber-500/30 hover:bg-white/8">
             <div className="text-2xl font-bold text-white">ShareASale</div>
-            <p className="mt-1 text-sm text-slate-400">Affiliate network</p>
+            <p className="mt-1 text-sm text-slate-400">1000s of brands</p>
+            <p className="mt-2 text-emerald-400 font-medium">5-50% commission</p>
             <span className="mt-3 inline-flex items-center gap-1 text-xs text-amber-400">
-              Apply <ExternalLink size={12} />
+              Sign up free <ExternalLink size={12} />
             </span>
           </a>
         </div>
@@ -182,7 +216,7 @@ export default function LinkVaultPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-white">Your Saved Links</h2>
-            <p className="text-slate-400">Save links here to attach them to images you publish.</p>
+            <p className="text-slate-400">Add your affiliate link here to use with your images</p>
           </div>
           <button 
             onClick={() => setShowAddForm(true)}
@@ -242,7 +276,7 @@ export default function LinkVaultPage() {
           <div className="mt-6 rounded-2xl border-2 border-dashed border-white/10 p-8 text-center">
             <AlertCircle className="mx-auto text-amber-400" size={40} />
             <h3 className="mt-4 text-lg font-semibold text-white">No links saved yet</h3>
-            <p className="mt-2 text-slate-400">Save your first affiliate link to attach it to images.</p>
+            <p className="mt-2 text-slate-400">Add your affiliate link to start earning from your images</p>
             <button
               onClick={() => setShowAddForm(true)}
               className="mt-4 inline-flex items-center gap-2 rounded-xl bg-amber-500 px-6 py-3 font-semibold text-black"
@@ -316,13 +350,13 @@ export default function LinkVaultPage() {
         <div className="text-center">
           <p className="text-lg text-emerald-400 font-medium">
             <CheckCircle2 size={20} className="inline mr-2" />
-            Your active link is set.
+            Your money link is ready!
           </p>
           <Link
             href="/image-forge"
             className="btn-premium mt-4 inline-flex items-center gap-3 rounded-xl px-10 py-5 text-xl font-bold text-black"
           >
-            Create Images
+            Create Images to Earn
             <ArrowRight size={24} />
           </Link>
         </div>

@@ -11,9 +11,10 @@ export default function ScaleTrainingPage() {
   return (
     <AppShell
       title="Scale Training"
-      subtitle="Advanced training on automating your workflow with G-Labs 95"
+      subtitle="Exclusive training to multiply your results and automate your income"
       showBanner={false}
     >
+      {/* Single promo banner (PremiumBanner hidden here to avoid duplicate) */}
       <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 p-8 shadow-lg shadow-emerald-500/20">
         <div className="flex gap-4">
           <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20">
@@ -21,12 +22,13 @@ export default function ScaleTrainingPage() {
           </div>
           <div>
             <h2 className="text-2xl font-extrabold text-white md:text-3xl">
-              Want to scale your G-Labs 95 workflow even further?
+              Want To Multiply Your Earnings To{" "}
+              <span className="text-amber-200">$1,000 - $5,000 A Day?</span>
             </h2>
             <p className="mt-3 max-w-2xl text-base text-white/90 md:text-lg">
-              G-Labs 95 is powerful on its own, but if you want to go further and automate your
-              entire publishing pipeline, watch this exclusive training. It walks through the
-              same automation system advanced users follow to scale their output.
+              G-Labs 95 is powerful on its own — but if you want to scale to truly life-changing
+              income, watch this exclusive training on automating your entire workflow. This is
+              the same system top earners use to compound their results.
             </p>
             <a
               href={JVZOO_CTA}
@@ -41,6 +43,7 @@ export default function ScaleTrainingPage() {
         </div>
       </div>
 
+      {/* Main content */}
       <div className="mx-auto max-w-3xl space-y-8 text-center">
         <div className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-sky-300">
           <Sparkles size={14} className="text-sky-400" />
@@ -52,11 +55,12 @@ export default function ScaleTrainingPage() {
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
             G-Labs 95
           </span>{" "}
-          Workflow
+          To $1,000+ Per Day
         </h2>
 
         <p className="text-lg text-slate-400 md:text-xl">
-          Watch this exclusive training to learn how to automate your G-Labs 95 publishing pipeline.
+          Watch this exclusive training to multiply your results and automate your path to
+          life-changing income.
         </p>
 
         <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-2xl">
@@ -66,7 +70,7 @@ export default function ScaleTrainingPage() {
               className="absolute left-0 top-0 h-full w-full border-0"
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
-              title="Scale Training video"
+              title="Glabs video"
             />
           </div>
         </div>

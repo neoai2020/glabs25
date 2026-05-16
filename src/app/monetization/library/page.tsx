@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AppShell } from "@/components/layout/AppShell";
 import { assets } from "@/lib/mockData";
 import { Badge } from "@/components/ui/Badge";
-import { Sparkles, Rocket, CheckCircle2, Image as ImageIcon, Link2, AlertCircle } from "lucide-react";
+import { Sparkles, Rocket, CheckCircle2, Image as ImageIcon, TrendingUp, DollarSign } from "lucide-react";
 
 export default function LibraryPage() {
   const [selectedAssets, setSelectedAssets] = useState<string[]>([]);
@@ -20,8 +20,9 @@ export default function LibraryPage() {
 
   return (
     <AppShell
-      title="Library"
-      subtitle="Your AI-generated images."
+      title="My Images"
+      subtitle="All your AI-generated money-making images"
+      showBanner={false}
       actions={
         <Link href="/image-forge" className="btn-premium flex items-center gap-2 rounded-xl px-5 py-3 font-semibold text-black">
           <Sparkles size={18} />
@@ -30,16 +31,26 @@ export default function LibraryPage() {
       }
     >
       {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-4">
         <div className="glass-card rounded-2xl p-5">
           <ImageIcon className="text-amber-400" size={24} />
           <p className="mt-3 text-2xl font-bold text-white">{assets.length}</p>
           <p className="text-sm text-slate-400">Total Images</p>
         </div>
-        <div className="glass-card rounded-2xl p-5">
+        <div className="glass-money rounded-2xl p-5">
           <CheckCircle2 className="text-emerald-400" size={24} />
           <p className="mt-3 text-2xl font-bold text-white">{readyCount}</p>
           <p className="text-sm text-slate-400">Ready to Publish</p>
+        </div>
+        <div className="glass-card rounded-2xl p-5">
+          <TrendingUp className="text-amber-400" size={24} />
+          <p className="mt-3 text-2xl font-bold text-white">1,247</p>
+          <p className="text-sm text-slate-400">Total Clicks</p>
+        </div>
+        <div className="glass-money rounded-2xl p-5">
+          <DollarSign className="text-emerald-400" size={24} />
+          <p className="mt-3 text-2xl font-bold text-emerald-400 money-glow">$186</p>
+          <p className="text-sm text-slate-400">Earnings</p>
         </div>
       </div>
 
@@ -47,7 +58,7 @@ export default function LibraryPage() {
         <div className="glass-card rounded-3xl p-12 text-center">
           <ImageIcon className="mx-auto text-slate-500" size={64} />
           <h3 className="mt-6 text-2xl font-bold text-white">No images yet</h3>
-          <p className="mt-2 text-lg text-slate-400">Generate your first image to get started.</p>
+          <p className="mt-2 text-lg text-slate-400">Create your first money-making images with AI</p>
           <Link
             href="/image-forge"
             className="btn-premium mt-8 inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-black"
@@ -77,14 +88,13 @@ export default function LibraryPage() {
           {/* Needs Link Warning */}
           {needLinkCount > 0 && (
             <div className="flex items-center gap-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
-              <AlertCircle className="text-amber-400 shrink-0" size={24} />
+              <DollarSign className="text-amber-400 shrink-0" size={24} />
               <div className="flex-1">
-                <p className="font-semibold text-white">{needLinkCount} image{needLinkCount > 1 ? 's' : ''} need an affiliate link</p>
-                <p className="text-slate-400">Attach a link before publishing.</p>
+                <p className="font-semibold text-white">{needLinkCount} image{needLinkCount > 1 ? 's' : ''} need a money link</p>
+                <p className="text-slate-400">Add your affiliate link to start earning from these images</p>
               </div>
-              <Link href="/monetization/link-vault" className="flex items-center gap-2 rounded-xl bg-amber-500 px-5 py-2 font-semibold text-black hover:bg-amber-400">
-                <Link2 size={16} />
-                Manage Links
+              <Link href="/monetization/link-vault" className="rounded-xl bg-amber-500 px-5 py-2 font-semibold text-black hover:bg-amber-400">
+                Add Link
               </Link>
             </div>
           )}

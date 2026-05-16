@@ -39,7 +39,7 @@ export default function ForgotPasswordPage() {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">G-Labs 95</h1>
-              <p className="text-xs font-medium text-slate-500">AI Creator Studio</p>
+              <p className="text-xs font-medium text-emerald-400">AI Income System</p>
             </div>
           </div>
 
@@ -170,10 +170,10 @@ export default function ForgotPasswordPage() {
             </div>
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20">
-                <span className="text-xl">✨</span>
+                <span className="text-xl">💰</span>
               </div>
               <div>
-                <p className="font-medium text-white">Pick up where you left off</p>
+                <p className="font-medium text-white">Get back to earning</p>
                 <p className="text-sm text-slate-400">Your images and links are waiting</p>
               </div>
             </div>

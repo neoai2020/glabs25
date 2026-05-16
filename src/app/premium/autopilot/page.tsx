@@ -1224,9 +1224,10 @@ type SavedLink = {
   url: string;
   network: string;
   isDefault: boolean;
+  earnings: string;
 };
 
-const STORAGE_KEY_PREFIX = "glabs_affiliate_links_";
+const STORAGE_KEY_PREFIX = "glabs_money_links_";
 
 function loadSavedLinks(userId: string | undefined): SavedLink[] {
   if (typeof window === "undefined") return [];
@@ -1234,6 +1235,23 @@ function loadSavedLinks(userId: string | undefined): SavedLink[] {
     const key = STORAGE_KEY_PREFIX + (userId ?? "anonymous");
     const stored = localStorage.getItem(key);
     if (stored) return JSON.parse(stored);
+    // One-time forward-migration from the renamed key used during the
+    // cleanup window so saved links aren't lost when restoring this code.
+    const renamedKey = "glabs_affiliate_links_" + (userId ?? "anonymous");
+    const renamed = localStorage.getItem(renamedKey);
+    if (renamed) {
+      const parsed = JSON.parse(renamed) as Array<Partial<SavedLink>>;
+      const normalized: SavedLink[] = parsed.map((l) => ({
+        id: String(l.id ?? Date.now()),
+        name: String(l.name ?? ""),
+        url: String(l.url ?? ""),
+        network: String(l.network ?? "Affiliate"),
+        isDefault: Boolean(l.isDefault),
+        earnings: String(l.earnings ?? "$0"),
+      }));
+      localStorage.setItem(key, JSON.stringify(normalized));
+      return normalized;
+    }
   } catch {}
   return [];
 }
@@ -1261,9 +1279,7 @@ export default function AutopilotPage() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    queueMicrotask(() => {
-      setSavedLinks(loadSavedLinks(user?.id));
-    });
+    setSavedLinks(loadSavedLinks(user?.id));
   }, [user?.id]);
 
   const isLinkAlreadySaved = useCallback(
@@ -1283,16 +1299,12 @@ export default function AutopilotPage() {
       id: Date.now().toString(),
       name: saveLinkName.trim(),
       url,
-      network: url.includes("amazon")
-        ? "Amazon"
-        : url.includes("etsy")
-        ? "Etsy"
-        : url.includes("walmart")
-        ? "Walmart"
-        : url.includes("digistore")
-        ? "DigiStore24"
-        : "Affiliate",
+      network: url.includes("amazon") ? "Amazon" :
+               url.includes("etsy") ? "Etsy" :
+               url.includes("walmart") ? "Walmart" :
+               url.includes("digistore") ? "DigiStore24" : "Affiliate",
       isDefault: savedLinks.length === 0,
+      earnings: "$0",
     };
     const updated = [...savedLinks, newLink];
     setSavedLinks(updated);
@@ -1341,7 +1353,7 @@ export default function AutopilotPage() {
   return (
     <AppShell
       title="Autopilot Traffic Machine"
-      subtitle="60 free traffic sources with step-by-step instructions."
+      subtitle="Post once. Get traffic forever. 60 free traffic sources with step-by-step instructions."
     >
       {/* ── Hero Stats ── */}
       <div className="glass-gold rounded-2xl p-6 md:p-8">
@@ -1352,7 +1364,7 @@ export default function AutopilotPage() {
               Your Traffic Autopilot
             </h2>
             <p className="mt-2 text-lg text-slate-300">
-              Post your link to these 60 sources and bring visitors back to it over time.
+              Post your link to these 60 sources and watch visitors flow in — forever.
             </p>
           </div>
           <Badge tone="gold" size="md" pulse>
@@ -1367,12 +1379,17 @@ export default function AutopilotPage() {
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <p className="text-3xl font-bold text-emerald-400">6</p>
-            <p className="text-sm text-slate-400">Niches Covered</p>
+            <p className="text-sm text-slate-400">Profitable Niches</p>
           </div>
           <div className="glass-card rounded-xl p-4 text-center">
             <p className="text-3xl font-bold text-amber-400">200–1,000</p>
             <p className="text-sm text-slate-400">Visitors/mo Per Source</p>
           </div>
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-emerald-500/10 px-4 py-2 text-center text-sm text-emerald-400">
+          <Users className="h-4 w-4" />
+          Members submitted to <span className="font-bold">847K+</span> traffic sources this month
         </div>
       </div>
 
@@ -1417,7 +1434,7 @@ export default function AutopilotPage() {
           Enter Your Affiliate Link Once
         </label>
         <p className="mb-4 text-sm text-slate-400">
-          Paste your link or choose from your saved Affiliate Links. It will be inserted into every description below automatically.
+          Paste your link or choose from your saved Money Links. It will be inserted into every description below automatically.
         </p>
 
         {/* Saved links selector */}
@@ -1429,7 +1446,7 @@ export default function AutopilotPage() {
             >
               <span className="flex items-center gap-2">
                 <Save size={16} className="text-amber-400" />
-                Choose from your saved Affiliate Links
+                Choose from your saved Money Links
               </span>
               <ChevronDown size={18} className={`text-slate-400 transition ${showDropdown ? "rotate-180" : ""}`} />
             </button>
@@ -1475,7 +1492,7 @@ export default function AutopilotPage() {
         )}
       </div>
 
-      {/* Save-to-Affiliate-Links popup */}
+      {/* Save-to-Money-Links popup */}
       {showSavePopup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="relative mx-4 w-full max-w-md rounded-3xl border border-white/10 bg-slate-900 p-8 shadow-2xl">
@@ -1492,7 +1509,7 @@ export default function AutopilotPage() {
                   <CheckCircle2 size={36} className="text-emerald-400" />
                 </div>
                 <h3 className="mt-4 text-xl font-bold text-white">Link Saved!</h3>
-                <p className="mt-2 text-slate-400">Your link has been saved to Affiliate Links.</p>
+                <p className="mt-2 text-slate-400">Your link has been saved to Money Links.</p>
               </div>
             ) : (
               <>
@@ -1502,7 +1519,7 @@ export default function AutopilotPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">Save This Link?</h3>
-                    <p className="text-sm text-slate-400">Save to Affiliate Links for easy reuse</p>
+                    <p className="text-sm text-slate-400">Save to Money Links for easy reuse</p>
                   </div>
                 </div>
 
@@ -1530,7 +1547,7 @@ export default function AutopilotPage() {
                       disabled={!saveLinkName.trim()}
                       className="flex-1 rounded-xl bg-amber-500 py-3.5 font-semibold text-black hover:bg-amber-400 disabled:opacity-50"
                     >
-                      Save to Affiliate Links
+                      Save to Money Links
                     </button>
                     <button
                       onClick={() => setShowSavePopup(false)}
@@ -1636,9 +1653,7 @@ export default function AutopilotPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span
-                      className={`text-base font-semibold md:text-lg ${
-                        isDone ? "text-emerald-400 line-through" : "text-white"
-                      }`}
+                      className={`text-base font-semibold md:text-lg ${isDone ? "text-emerald-400 line-through" : "text-white"}`}
                     >
                       {source.name}
                     </span>
@@ -1749,7 +1764,8 @@ export default function AutopilotPage() {
           You have {60 - completedCount} sources left!
         </h3>
         <p className="text-slate-400">
-          Every source you submit to is another stream of free traffic flowing to your link. Keep going!
+          Every source you submit to is free, passive traffic flowing to your link — forever. Keep
+          going!
         </p>
       </div>
     </AppShell>

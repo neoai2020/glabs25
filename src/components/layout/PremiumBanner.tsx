@@ -12,7 +12,7 @@ export function PremiumBanner() {
     <div className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400 p-6 lg:p-8">
       {/* Background decoration */}
       <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-black/10 to-transparent" />
-
+      
       {/* Dismiss button */}
       <button
         onClick={() => setDismissed(true)}
@@ -40,7 +40,7 @@ export function PremiumBanner() {
           <p className="mt-2 text-white/90 leading-relaxed">
             This training is free if you&apos;re a G-Labs 95 account member. So, if you want to watch the training, just tap the yellow button below.
           </p>
-
+          
           <a
             href="https://www.jvzoo.com/c/86517/415009"
             target="_blank"
